@@ -3,7 +3,7 @@
 Delia Walker-Jones
 
 ```{r}
-#scoreActivity::score253(1)
+scoreActivity::score253(1)
 ```
 
 
@@ -11,7 +11,7 @@ Delia Walker-Jones
 
 ## Task 1
 ```{r}
-library("mosaicData")
+library(mosaicData)
 ```
 
 ## Task 2

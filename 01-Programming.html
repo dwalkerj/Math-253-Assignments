@@ -122,13 +122,27 @@ $(document).ready(function () {
 <div id="in-class-programming-activity-day-1" class="section level1">
 <h1>In-Class Programming Activity, Day 1</h1>
 <p>Delia Walker-Jones</p>
-<pre class="r"><code>#scoreActivity::score253(1)</code></pre>
+<pre class="r"><code>scoreActivity::score253(1)</code></pre>
+<pre><code>## --------
+## Running test statements for day  01</code></pre>
+<pre><code>## Loading required package: scoreActivity</code></pre>
+<pre><code>## Loading required package: lazyeval</code></pre>
+<pre><code>## FAILED: &quot;package:mosaic&quot; %in% search()
+## ERROR when running  check(TRUE, is.character(task2))
+## ERROR when running  check(TRUE, grepl(&quot;^Today is&quot;, task2) &amp;&amp; grepl(&quot;201.$&quot;, task2))
+## ERROR when running  check(TRUE, all(task3a %in% names(mosaicData::Galton)))
+## ERROR when running  check(nrow(mosaicData::Galton), task3b)
+## ERROR when running  check(about(mean(mosaicData::Galton$height)), task3c)
+## ERROR when running  check(TRUE, all(dim(task4) == c(2, 3)))
+## ERROR when running  check(TRUE, max(task5x) &lt;= 1 &amp;&amp; min(task5x) &gt;= 0)
+## ERROR when running  check(TRUE, max(task5y) &lt;= 1 &amp;&amp; min(task5y) &gt;= 0)
+## ERROR when running  check(about(pi, pm = 0.5), task5pi)</code></pre>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
 </div>
 <div id="task-1" class="section level2">
 <h2>Task 1</h2>
-<pre class="r"><code>library(&quot;mosaicData&quot;)</code></pre>
+<pre class="r"><code>library(mosaicData)</code></pre>
 </div>
 <div id="task-2" class="section level2">
 <h2>Task 2</h2>
@@ -136,7 +150,7 @@ $(document).ready(function () {
 string2 = Sys.time()
 task2 = paste(string1, string2)
 task2</code></pre>
-<pre><code>## [1] &quot;Today is 2017-01-24 14:06:04&quot;</code></pre>
+<pre><code>## [1] &quot;Today is 2017-01-24 14:15:54&quot;</code></pre>
 </div>
 <div id="task-3" class="section level2">
 <h2>Task 3</h2>
@@ -166,7 +180,7 @@ task5y = runif(1000)
 montecarlo = sqrt((task5x^2) + (task5y^2))
 task5pi = ((sum(montecarlo &lt; 1)) / 1000) * 4
 task5pi</code></pre>
-<pre><code>## [1] 3.236</code></pre>
+<pre><code>## [1] 3.084</code></pre>
 </div>
 </div>
 
