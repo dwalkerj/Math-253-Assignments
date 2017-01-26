@@ -1,6 +1,6 @@
 # In-Class Programming Activity, Day 2
 
-Your work goes here ...
+Delia Walker-Jones
 
 
 
@@ -9,3 +9,37 @@ Your work goes here ...
 ```{r}
 scoreActivity::score253(2)
 ```
+
+
+## Task 1
+```{r}
+#download.file("http://www-bcf.usc.edu/~gareth/ISL/Auto.csv", destfile="Auto.csv")
+
+auto_file_name = "/home/local/MAC/dwalkerj/Math_253_Assignments/Auto.csv"
+```
+
+## Task 2
+```{r}
+Auto = read.csv(auto_file_name)
+dim(Auto)
+names(Auto)
+```
+
+## Task 3
+```{r}
+task3 = summary(Auto$horsepower)
+task3
+```
+
+## Task 4
+```{r}
+library(ISLR)
+```
+
+## Task 5
+```{r}
+task5top = Auto[c(1, 2, 3, 4, 5), c(1, 2, 3)]
+task5top
+
+```
+
