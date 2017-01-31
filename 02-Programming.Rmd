@@ -41,5 +41,10 @@ library(ISLR)
 task5top = Auto[c(1, 2, 3, 4, 5), c(1, 2, 3)]
 task5top
 
+task5bottom = Auto[c(393, 394, 395, 396, 397), c(7, 8, 9)]
+task5bottom
+
 ```
 
+## Task 6 
+Completed
