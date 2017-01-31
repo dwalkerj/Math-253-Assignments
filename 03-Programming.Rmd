@@ -1,6 +1,6 @@
 # In-Class Programming Activity, Day 3
 
-Your work goes here ...
+Delia Walker-Jones
 
 
 
@@ -9,3 +9,25 @@ Your work goes here ...
 ```{r}
 scoreActivity::score253(3)
 ```
+
+## Task 1
+```{r}
+data(College, package = "ISLR")
+
+```
+
+## Task 2
+```{r}
+College[["Yield"]] <- College[["Enroll"]]/College[["Accept"]]
+```
+
+## Task 3
+```{r}
+all_indices <- c(1:777)
+train_indices <- sample(1:777, size = 200)
+test_indices <- setdiff(all_indices, train_indices)
+
+#Train_data <- data.frame(College[train_indices])
+```
+
+
