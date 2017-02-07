@@ -1,6 +1,32 @@
 # In-Class Programming Activity, Day 5
 
-Your work goes here ...
+Delia Walker-Jones
+
+## Task 1
+```{r}
+library(mosaicData)
+summary(Galton$height)
+nbins <- 10
+```
+
+## Task 2
+```{r}
+evenly_spaced <- seq(56, 79, length.out = nbins + 1)
+```
+
+## Task 3
+```{r}
+bin_counts <- cut(Galton$height, breaks = evenly_spaced)
+```
+
+## Task 4
+```{r}
+#hist_basics <- (xL = evenly_spaced, xR = evenly_spaced, count = as.numeric(bin_counts))
+```
+
+
+
+
 
 
 
