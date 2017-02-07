@@ -2,18 +2,9 @@
 
 Delia Walker-Jones
 
-
-
-## Test statements
-
-```{r}
-scoreActivity::score253(3)
-```
-
 ## Task 1
 ```{r}
 data(College, package = "ISLR")
-
 ```
 
 ## Task 2
@@ -27,7 +18,36 @@ all_indices <- c(1:777)
 train_indices <- sample(1:777, size = 200)
 test_indices <- setdiff(all_indices, train_indices)
 
-#Train_data <- data.frame(College[train_indices])
+Train_data <- data.frame(College[train_indices,])
+Test_data <- data.frame(College[test_indices,])
 ```
 
+## Task 4
+```{r}
+Yield_mod1 <- lm(Yield ~ Top10perc + Outstate + Expend,
+                 data=Train_data)
+```
+
+## Task 5
+```{r}
+Y_train = Train_data$Yield
+fhat_train = predict(Yield_mod1, newdata = Train_data)
+MSE_train = 1/200 * sum((Y_train - fhat_train)^2)
+```
+
+## Task 6
+```{r}
+Y_test = Test_data$Yield
+fhat_test = predict(Yield_mod1, newdata = Test_data)
+MSE_test = 1/200 * sum((Y_test - fhat_test)^2)
+```
+
+
+
+
+## Test statements
+
+```{r}
+scoreActivity::score253(3)
+```
 
