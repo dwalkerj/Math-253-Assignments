@@ -1,2 +1,177 @@
 # Topic 1 Exercises
+Delia Walker-Jones
+
+## 2.4.1
+
+### A
+We would expect a flexible model to work better, because we have fewer parameters that can be better estimated with a larger sample size.
+
+### B
+We could expect an inflexible model to work better, because if we have a lot of predictors, that means we can select a set of parameters that will work to our smaller number of observations.
+
+### C
+A flexible model would work best, because an inflexible model assumes a typically linear relationship. We would just have to be aware of overfitting.
+
+### D
+A flexible model would work best because that is our best way to reduce our total error. If we have a large amount of irreducible error, it would be best to come up with a flexible model in order to reduce our reducible error.
+
+## 2.4.3
+
+### A -- drawn
+
+## 2.4.6
+The parametric approach reduces the problem of estimating F down to one of estimating a set of parameters. This simplifies the problem of estimating F because it's easier to estimate a SET of parameters rather than just one arbitrary function according to F. However, because this approach usually doesn't match the true form of F, it can often be a poor estimate.
+
+The non-parametric approach, however, estimates F by producing a formula based on observed data, rather than using parameters. However, it requires a huge number of observed data in order to produce a good estimate.
+
+## 2.4.8
+
+### A
+I wasn't able to download the package onto my computer here--therefore I accessed the package via RStudio instead of downloading the .csv and using read.csv.
+```{r}
+data(College, package = "ISLR")
+```
+
+### B
+```{r}
+head(College)
+# This dataset comes with the rows already named:
+row.names(College)
+```
+
+### C
+```{r}
+# i
+summary(College)
+
+# ii
+#pairs(College[,1:10])
+
+# iii
+#plot(College$Private, College$Outstate)
+
+# iv
+Elite = rep("No", nrow(College))
+Elite[College$Top10perc>50]="Yes"
+Elite=as.factor(Elite)
+College = data.frame(College, Elite)
+summary(College)
+plot(College$Elite, College$Outstate)
+
+# v
+par(mfrow=c(2,2))
+hist(College$Grad.Rate)
+hist(College$S.F.Ratio)
+hist(College$Expend)
+hist(College$Room.Board)
+
+# vi
+# As I continue to explore the data, I'm curious about how different variables skew. Expenditure, for instance, has a huge right tail, which suggests that though the vast majority of schools spend between 5000$ and 10000$ per student, there is a handful of schools that spends up to 35000$ per student.
+
+# I plotted PhD and Terminal variables next. I was surprised to see how many more terminal degree faculty colleges have; I would have expected schools to have more PhD faculty. The Terminal variable has a definite left-skew, whereas the PhD variable is more normal.
+
+par(mfrow=c(2,1))
+hist(College$PhD)
+hist(College$Terminal)
+```
+
+## 2.4.9
+### A
+```{r}
+data(Auto, package = "ISLR")
+auto = na.omit(Auto)
+head(auto)
+```
+mpg, cylinders, displacement, horsepower, weight, and acceleration are quantitative. year, origin, and name are qualitative.
+
+### B
+```{r}
+range(auto$mpg)
+range(auto$cylinders)
+range(auto$displacement)
+range(auto$horsepower)
+range(auto$weight)
+range(auto$acceleration)
+```
+
+### C
+```{r}
+summary(auto)
+```
+
+### D
+```{r}
+dim(auto)
+autoSubset = auto[-c(10:85),]
+dim(autoSubset)
+summary(autoSubset)
+```
+
+### E
+```{r}
+# First I explored whether there's a relationship between the weight of a car and how fast it accelerates. There seems to be a vague trend of higher weight correlating to lower acceleration. But it is an undefined trend and would need more modeling.
+plot(auto$weight, auto$acceleration)
+
+# Next I explored whether the country of origin is related to acceleration, first releveling the "origin" variable so that 1, 2, 3 were named. From this we can see that Japanese-made cars have slightly higher median acceleration, and American-made cars have the widest range in acceleration, and European cars have the highest acceleration of all (though their median is lower than Japanese-made).
+auto$origin=factor(auto$origin, labels=c("American", "European", "Japanese"))
+plot(auto$origin, auto$acceleration)
+```
+
+### F
+I didn't graph anything against mpg, but I imagine there would be a relationship between weight and mpg, with bigger, heavier cars having a lower mpg. A quick look at a plot shows us:
+```{r}
+plot(auto$mpg, auto$weight)
+```
+There does indeed appear to be a relationship, perhaps a logarithmic one. I think year would probably also have an effect: older cars may be less likely to be fuel-efficient.
+
+## 2.4.2
+### A
+This is a regression problem because we are looking at what affects CEO salary, a quantitative variable. We are most interested in inference, because we want to be able to interpret what effect each factor has on CEO salary; we're not predicting salaries.
+n = 500
+p = profit, # of employees, industry
+
+### B
+This is a classification problem because we are looking at a yes/no response variable--there are only two options. We are most interested in prediction, because we want to know how another similar product might perform in the future.
+n = 20
+p = price for product, marketing budget, competition price, 10 others
+
+### C
+This is a regression problem because we are looking at % change, a quantitative variable. And we are most interested in prediction, because we want to know how the USD will fluctuate in the future.
+n = 52 (weeks per year)
+p = % change in US market, % change in Brit market, % change in German market
+
+## 2.4.7
+### A
+```{r}
+obs1 = sqrt(((0-0)^2) + ((0-3)^2) + ((0-0)^2))
+obs2 = sqrt(((0-2)^2) + ((0-0)^2) + ((0-0)^2))
+obs3 = sqrt(((0-0)^2) + ((0-1)^2) + ((0-3)^2))
+obs4 = sqrt(((0-0)^2) + ((0-1)^2) + ((0-2)^2))
+obs5 = sqrt(((0+1)^2) + ((0-0)^2) + ((0-1)^2))
+obs6 = sqrt(((0-1)^2) + ((0-1)^2) + ((0-1)^2))
+
+euclidDist = c(obs1, obs2, obs3, obs4, obs5, obs6)
+euclidDist
+```
+
+### B
+The smallest Euclidean distance is for observation #5: therefore, we predict (0, 0, 0), our Y point, will be Green, same as observation #5.
+
+### C
+The three smallest distances are for observations #2, #5, and #6. #2 and #6 are Red while #5 is Green. Therefore, we predict our Y point will be Red, like 2/3 nearest points.
+
+### D
+We would expect the best value of K to be small, because a small value for K makes the boundary more flexible and more likely to be non-linear. However, if K is too small, we run the risk of overfitting.
+
+
+
+
+
+
+
+
+
+
+
+
 
