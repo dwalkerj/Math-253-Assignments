@@ -10,10 +10,12 @@ plot(1, xlim = c(0, 100), ylim = c(0,100), type="n")
 ## Task 2
 ```{r}
 plot(1, xlim = c(0, 100), ylim = c(0,100), type="n")
-x1 = xy.coords(20, 40)
-y1 = xy.coords(40, 40)
-points(x1, col = "forest green")
-points(y1, col = "blue")
+x1 = 20
+y1 = 40
+points(x1, y1, col = "forest green")
+points(2*x1, 2*y1, col = "blue")
+points(x1, 2*y1, col = "red")
+points(2*x1, y1, col = "yellow")
 
 ```
 
