@@ -13,11 +13,16 @@ We could expect an inflexible model to work better, because if we have a lot of 
 A flexible model would work best, because an inflexible model assumes a typically linear relationship. We would just have to be aware of overfitting.
 
 ### D
-A flexible model would work best because that is our best way to reduce our total error. If we have a large amount of irreducible error, it would be best to come up with a flexible model in order to reduce our reducible error.
+A flexible model would work best because that is our best way to reduce our total error. If we have a large amount of irreducible error, it would be best to come up with a flexible model in order to reduce our reducible error. However, this may run the risk of overfitting.
 
 ## 2.4.3
 
-### A -- drawn
+### A 
+
+drawn
+
+### B
+The training error slopes downward because the error decreases with higher flexibility of a model. The test error makes a parabola, because while the increase in flexibility initially decreases the error, it then starts to overfit as the model becomes too flexible. As we use more flexible methods, the varianace will increase and the bias will decrease. The irreducible error curve will just be a flat line, because it can't change according to the flexibility of our model.
 
 ## 2.4.6
 The parametric approach reduces the problem of estimating F down to one of estimating a set of parameters. This simplifies the problem of estimating F because it's easier to estimate a SET of parameters rather than just one arbitrary function according to F. However, because this approach usually doesn't match the true form of F, it can often be a poor estimate.
@@ -45,10 +50,10 @@ row.names(College)
 summary(College)
 
 # ii
-#pairs(College[,1:10])
+pairs(College[,1:10])
 
 # iii
-#plot(College$Private, College$Outstate)
+plot(College$Private, College$Outstate)
 
 # iv
 Elite = rep("No", nrow(College))
