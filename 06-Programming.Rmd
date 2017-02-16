@@ -1,6 +1,13 @@
 # In-Class Programming Activity, Day 6
 
-Your work goes here ...
+Delia Walker-Jones
+
+## Task 1
+
+```{r}
+myHistogram <- function(){}
+```
+
 
 
 

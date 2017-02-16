@@ -1,2 +1,124 @@
 # Topic 2 Exercises: Linear Regression
 
+Delia Walker-Jones
+
+## 3.6
+### 3.6.1
+```{r}
+library(MASS)
+library(ISLR)
+```
+
+### 3.6.2
+```{r}
+data(Boston, package = "MASS")
+names(Boston)
+
+mod1 = lm(medv~lstat, data = Boston)
+summary(mod1)
+names(mod1)
+coef(mod1)
+confint(mod1)
+predict(mod1, data.frame(lstat=c(5,10,15)), interval="confidence")
+predict(mod1, data.frame(lstat=c(5,10,15)), interval="prediction")
+plot(Boston$lstat, Boston$medv, pch="+")
+abline(mod1,lwd=3,col="red")
+par(mfrow = c(2,2))
+plot(mod1)
+plot(predict(mod1), residuals(mod1))
+plot(predict(mod1), rstudent(mod1))
+plot(hatvalues(mod1))
+which.max(hatvalues(mod1))
+```
+
+### 3.6.3
+```{r}
+mod2 = lm(medv~lstat+age, data = Boston)
+summary(mod2)
+
+mod3 = lm(medv~., data = Boston)
+summary(mod3)
+
+library(car)
+vif(mod3)
+
+mod4 = lm(medv~.-age, data=Boston)
+summary(mod4)
+```
+
+### 3.6.4
+```{r}
+summary(lm(medv~lstat*age, data = Boston))
+```
+
+### 3.6.5
+```{r}
+mod5 = lm(medv~lstat+I(lstat^2), data = Boston)
+summary(mod5)
+
+mod6 = lm(medv~lstat, data = Boston)
+anova(mod6, mod5)
+
+par(mfrow = c(2,2))
+plot(mod5)
+
+mod7 = lm(medv~poly(lstat, 5), data = Boston)
+summary(mod7)
+
+summary(lm(medv~log(rm), data = Boston))
+```
+### 3.6.6
+```{r}
+data(Carseats, package = "ISLR")
+names(Carseats)
+mod1 = lm(Sales~.+Income:Advertising + Price:Age, data = Carseats)
+summary(mod1)
+contrasts(Carseats$ShelveLoc)
+```
+### 3.6.7
+```{r}
+LoadLibraries = function(){
+   library(ISLR)
+   library(MASS)
+   print("The libraries have been loaded.")
+}
+LoadLibraries
+LoadLibraries()
+```
+
+## 3.7.13
+
+## On p. 66 the authors state, “This is clearly not true in Fig. 3.1” Explain why.
+
+## On p. 77 the authors state, “In this case we cannot even fit the multiple regression models using least squares ….” Explain why.
+
+## 3.7.3
+### A
+salary = 50 + 20`*`GPA + 0.07`*`IQ + 35`*`GenderF + 0.01`*`GPA`*`IQ - 10`*`GPA`*`GenderF
+
+iii. is correct: men make more than women, but only if their GPA is high enough to offset the -10 interaction term.
+
+### B
+salary = 50 + 20`*`4.0 + 0.07`*`110 + 35`*`1 + 0.01`*`4.0`*`110 - 10`*`4.0`*`1
+
+So, 137.1 (in thousands $) starting salary for a woman with IQ 110 and GPA 4.0.
+
+### C
+False. It depends on the units. I would argue since GPA is on a 0.0 - 4.0 scale, 0.01 marks a relatively large difference when compared to one unit increase of IQ. Moreover, we would need to look at the p-value or F-statistic to see if it was significant.
+
+## 3.7.4
+### A
+It's hard to tell without knowing more information. However, if the true relationship is linear, then it seems likely that the training RSS would be smaller for the linear regression and larger for the cubic regression.
+
+### B
+It may be that the test RSS for the cubic regression would still be larger, because it is more flexible and therefore will overfit more. However, it's impossible to tell without more information about the test data.
+
+### C
+If the true relationship is not linear, then it seems possible that the training RSS for the cubic regression may be smaller than the training RSS for the linear regression. Cubic regression has greater flexibility, so it will fit the training data better.
+
+### D
+It's impossible to tell without more information. We assume our estimate is unbiased; therefore it could drastically overfit or underfit our test data in many ways--but the key point is that it could go either way.
+
+
+
+

@@ -119,69 +119,23 @@ $(document).ready(function () {
 </div>
 
 
-<div id="in-class-programming-activity-day-5" class="section level1">
-<h1>In-Class Programming Activity, Day 5</h1>
+<div id="in-class-programming-activity-day-6" class="section level1">
+<h1>In-Class Programming Activity, Day 6</h1>
 <p>Delia Walker-Jones</p>
 <div id="task-1" class="section level2">
 <h2>Task 1</h2>
-<pre class="r"><code>library(mosaicData)
-summary(Galton$height)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   56.00   64.00   66.50   66.76   69.70   79.00</code></pre>
-<pre class="r"><code>nbins &lt;- 10</code></pre>
-</div>
-<div id="task-2" class="section level2">
-<h2>Task 2</h2>
-<pre class="r"><code>evenly_spaced &lt;- seq(56, 79, length.out = nbins + 1)</code></pre>
-</div>
-<div id="task-3" class="section level2">
-<h2>Task 3</h2>
-<pre class="r"><code>bin_counts &lt;- cut(Galton$height, breaks = evenly_spaced)</code></pre>
-</div>
-<div id="task-4" class="section level2">
-<h2>Task 4</h2>
-<pre class="r"><code>#hist_basics &lt;- (xL = evenly_spaced, xR = evenly_spaced, count = as.numeric(bin_counts))</code></pre>
-</div>
-<div id="task-5" class="section level2">
-<h2>Task 5</h2>
-<pre class="r"><code>make_one_bar &lt;- function(point) {
-  xLeft &lt;- point$xL
-  xRight &lt;- point$xR
-  height &lt;- point$count
-  res &lt;- data.frame(
-              x = c(xLeft,  xLeft,  xRight, xRight, NA),
-              y = c(    0, height,  height,      0, NA)
-  )
-  res
-}
-# ================
-one_to_five &lt;- function(hist_data) {
-  bars &lt;- NULL
-  for (k in 1:nrow(hist_data)) {
-    new_bar &lt;- make_one_bar(hist_data[k, ])
-    bars &lt;- rbind(bars, new_bar)
-  }
-  bars
-}</code></pre>
+<pre class="r"><code>myHistogram &lt;- function(){}</code></pre>
 </div>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
-<pre class="r"><code>scoreActivity::score253(5)</code></pre>
+<pre class="r"><code>scoreActivity::score253(6)</code></pre>
 <pre><code>## --------
-## Running test statements for day  05</code></pre>
+## Running test statements for day  06</code></pre>
 <pre><code>## Loading required package: scoreActivity</code></pre>
 <pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## Warning in results[k] &lt;- paste(&quot;ERROR when running &quot;, deparse(ldots[k][[1]]
-## $expr)): number of items to replace is not a multiple of replacement length</code></pre>
-<pre><code>## passed: &quot;package:mosaicData&quot; %in% search()
-## passed: object &quot;bin_counts&quot; exists
-## passed: length(nbins)
-## passed: length(evenly_spaced)
-## passed: all(abs(diff(diff(evenly_spaced))) &lt; 0.1)
-## FAILED: length(bin_counts)
-## FAILED: object &quot;hist_basics&quot; doesn't exist.
-## ERROR when running  check(TRUE, all(c(&quot;xL&quot;, &quot;xR&quot;, &quot;count&quot;) %in% names(hist_basics)), 
-## passed: object &quot;make_one_bar&quot; exists</code></pre>
+<pre><code>## passed: object &quot;myHistogram&quot; exists
+## FAILED: &quot;fill&quot; %in% names(formals(myHistogram))
+## FAILED: &quot;dnorm&quot; %in% all.names(body(myHistogram))</code></pre>
 </div>
 </div>
 
