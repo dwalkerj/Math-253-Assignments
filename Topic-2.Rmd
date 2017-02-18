@@ -87,6 +87,102 @@ LoadLibraries()
 ```
 
 ## 3.7.13
+```{r}
+set.seed(1)
+
+# A
+x <- rnorm(100)
+
+# B
+eps <- rnorm(100, sd = sqrt(0.25))
+
+# C
+Y <- -1 + 0.5*x + eps
+length(Y)
+
+# The length of vector Y is 100. B0 is -1 and B1 is 0.5.
+
+# D
+plot(x, Y)
+
+# There appears to be a positive linear relationship between the two.
+
+# E
+fit1 = lm(Y ~ x)
+summary(fit1)
+
+# Here predicted B0 and B1 are -1.01 and 0.499 repsectively, which are pretty close to the true B0 and B1.
+
+# F
+plot(x, Y)
+abline(fit1, col = "blue")
+abline(-1, 0.5, col = "red")
+legend("bottomright", c("Least square", "Regression"), col = c("blue", "red"), lty = c(1, 1))
+
+# G
+fit2 = lm(Y ~ x + I(x^2))
+summary(fit2)
+
+# It doesn't seem like a quadratic term improves the model much--the p-value for the x^2 term is 0.164, fairly large.
+```
+
+### H
+```{r}
+set.seed(1)
+
+x <- rnorm(100)
+
+eps <- rnorm(100, sd = sqrt(0.125))
+
+Y <- -1 + 0.5*x + eps
+
+plot(x, Y, ylim=c(-2.5, 0.5))
+
+fit3 = lm(Y ~ x)
+summary(mod3)
+
+plot(x, Y, ylim=c(-2.5, 0.5))
+abline(fit3, col = "blue")
+abline(-1, 0.5, col = "red")
+legend("bottomright", c("Least square", "Regression"), col = c("blue", "red"), lty = c(1, 1))
+```
+In this example there's a lot less noise. The least squares line overlaps the population regression line. Predicted B0 and B1 are very close to the true values. The RSE is lower because there is less noise and the R^2 is higher. 
+
+### I
+```{r}
+set.seed(1)
+
+x <- rnorm(100)
+
+eps <- rnorm(100, sd = sqrt(0.5))
+
+Y <- -1 + 0.5*x + eps
+
+plot(x, Y, ylim=c(-2.5, 0.5))
+
+fit4 = lm(Y ~ x)
+summary(mod4)
+
+plot(x, Y, ylim=c(-2.5, 0.5))
+abline(fit4, col = "blue")
+abline(-1, 0.5, col = "red")
+legend("bottomright", c("Least square", "Regression"), col = c("blue", "red"), lty = c(1, 1))
+```
+There is a lot more noise in this model. The predicted B0 and B1 are still very close to the true B0 and B1, but the RSE is much larger and the R^2 is much smaller, because we have more variation in the data. The lines don't overlap.
+
+### J
+```{r}
+confint(fit1)
+confint(fit3)
+confint(fit4)
+```
+The confidence intervals for the x coefficient seem to be centered around .5 while the intervals for the intercept coefficient are centered around -1. The noisier the data, the wider the interval. With less noise, the coefficients are more predictable.
+
+
+
+
+
+
 
 ## On p. 66 the authors state, “This is clearly not true in Fig. 3.1” Explain why.
 
