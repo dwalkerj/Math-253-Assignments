@@ -1,6 +1,58 @@
 # In-Class Programming Activity, Day 7
 
-Your work goes here ...
+Delia Walker-Jones
+
+## Task 1
+```{r}
+vals <- rexp(10, rate = .01)
+```
+
+## Task 2
+```{r}
+vals <- rexp(10, rate = .01)
+testV <- dexp(vals, rate = 0.005)
+test200 <- sum(log(testV))
+```
+
+## Task 3
+```{r}
+vals <- rexp(10, rate = .01)
+LL_exp <- function(r){
+ sum(log(dexp(vals, rate = r)))
+}
+
+#LL_exp(1/50)
+#LL_exp(1/75)
+
+```
+
+## Task 4
+```{r}
+rates = seq(from = 0.02, to = 0.005, by = -0.0005)
+rates
+```
+
+## Task 5
+```{r}
+results <- sapply(rates, LL_exp)
+results
+```
+
+## Task 6
+```{r}
+plot(results, 1/rates)
+```
+
+Somewhere around 60?
+
+## Task 7
+```{r}
+exp_results <- optimize(LL_exp, lower = 1/200, upper=1/50, maximum=TRUE)
+exp_results
+```
+
+
+
 
 
 
