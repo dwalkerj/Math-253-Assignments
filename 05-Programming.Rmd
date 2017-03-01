@@ -12,16 +12,18 @@ nbins <- 10
 ## Task 2
 ```{r}
 evenly_spaced <- seq(56, 79, length.out = nbins + 1)
+evenly_spaced
 ```
 
 ## Task 3
 ```{r}
-bin_counts <- cut(Galton$height, breaks = evenly_spaced)
+count <- cut(Galton$height, breaks = evenly_spaced)
+bin_counts <- table(count)
 ```
 
 ## Task 4
 ```{r}
-hist_basics <- data.frame(xL = evenly_spaced - 1, xR = evenly_spaced + 1, count = as.numeric(bin_counts))
+hist_basics <- data.frame(xL = evenly_spaced[-length(evenly_spaced)], xR = evenly_spaced[-1], count = as.numeric(bin_counts))
 hist_basics
 ```
 
@@ -46,7 +48,18 @@ one_to_five <- function(hist_data) {
   }
   bars
 }
+
+My_bars <- data.frame(one_to_five(hist_basics))
+My_bars
 ```
+
+## Task 6
+```{r}
+plot(My_bars, type="n")
+lines(My_bars)
+polygon(My_bars, col = "skyblue")
+```
+
 
 
 
