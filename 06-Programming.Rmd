@@ -5,7 +5,64 @@ Delia Walker-Jones
 ## Task 1
 
 ```{r}
-myHistogram <- function(){}
+library(mosaicData)
+
+## Helper functions for make_Histogram
+make_one_bar <- function(point) {
+  xLeft <- point$xL
+  xRight <- point$xR
+  height <- point$count
+  res <- data.frame(
+              x = c(xLeft,  xLeft,  xRight, xRight, NA),
+              y = c(    0, height,  height,      0, NA)
+  )
+  res
+}
+# ================
+one_to_five <- function(hist_data) {
+  bars <- NULL
+  for (k in 1:nrow(hist_data)) {
+    new_bar <- make_one_bar(hist_data[k, ])
+    bars <- rbind(bars, new_bar)
+  }
+  bars
+}
+
+get_bins <- function(data_set){
+  nbins <- 10
+  evenly_spaced <- seq(min(data_set), max(data_set), length.out = nbins + 1)
+  count <- cut(Galton$height, breaks = evenly_spaced)
+  bin_counts <- table(count)
+  hist_basics <- data.frame(xL = evenly_spaced[-length(evenly_spaced)], xR =  evenly_spaced[-1], count = as.numeric(bin_counts))
+  return(data.frame(one_to_five(hist_basics)))
+}
+
+#gaussian_curve <- function(data_set){
+ #  gaussianx <- seq(min(data_set), max(data_set)) 
+  # yval <- dnorm(gaussianx, mean = mean(data_set), sd = sd(data_set))
+   #multiplier <- diff(data_set[(length(data_set)/2):(length(data_set)/2) + 1])*#length(data_set)
+   #print(multiplier)
+   #gaussiany <- yval*multiplier
+   #print(gaussiany)
+   #plot(gaussianx, gaussiany, type = "n")
+#}
+
+#gaussian_curve(Galton$height)
+
+myHistogram <- function(data_set, fill){
+  data_bars <- get_bins(data_set)
+  gaussianx <- seq(min(Galton$height), max(Galton$height)) 
+  gaussiany <- (dnorm(gaussianx, mean = mean(Galton$height), sd = sd(Galton$height))) * length(Galton$height)
+  #plot(data_bars, type="n")
+  plot(gaussianx, gaussiany, type = "n", col = "red")
+  lines(data_bars)
+  polygon(data_bars, col = fill)
+}
+
+
+a = myHistogram(Galton$height, "skyblue")
+myHistogram(Galton$mother, "forestgreen")
+myHistogram(Galton$father, "lightpink")
 ```
 
 
