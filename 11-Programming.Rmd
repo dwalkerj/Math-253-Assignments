@@ -1,6 +1,34 @@
 # In-Class Programming Activity, Day 11
 
-Your work goes here ...
+Delia Walker-Jones
+
+## Correlation and Covariance
+```{r}
+Sigma <- matrix(c(1, -0.7, -0.7, 1), nrow = 2)
+Sigma_inv <- solve(Sigma)
+test_inv <- Sigma %*% Sigma_inv
+```
+
+## Matrix Compositions
+```{r}
+A <- chol(Sigma)
+t(A)
+
+# This equals Sigma
+t(A) %*% A
+```
+
+## Orthogonal Vectors and Matrices
+```{r}
+x1 = cbind(rnorm(10))
+x2 = cbind(rnorm(10))
+
+X = cbind(x1, x2)
+
+t(X) %*% X
+
+
+```
 
 
 
