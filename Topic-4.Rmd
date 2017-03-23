@@ -1,2 +1,26 @@
 # Topic 4 Exercises: Classification
 
+Delia Walker-Jones
+
+## 4.7.11
+## 4.7.13
+## 4.7.1
+Prove that  
+p(X) = e^(B~0~ + B~1~`*`X)/1 + e^(B~0~ + B~1~`*`X)  
+is equivalent to  
+p(X)/1 - p(X) = e^(B~0~ + B~1~`*`X)
+
+p(X) `*` (1 + e^(B~0~ + B~1~`*`X)) = e^(B~0~ + B~1~`*`X)  
+p(X) + (p(X) `*` e^(B~0~ + B~1~`*`X)) = e^(B~0~ + B~1~`*`X)
+p(X) - e^(B~0~ + B~1~`*`X) = -(p(X) `*` e^(B~0~ + B~1~`*`X))  
+e^(B~0~ + B~1~`*`X) = (p(X) `*` e^(B~0~ + B~1~`*`X)) - p(X)  
+e^(B~0~ + B~1~`*`X) = p(X) `*` (e^(B~0~ + B~1~`*`X) - 1)  
+
+
+## 4.7.8
+The KNN (K = 1) approach 
+
+## 4.7.9
+
+
+
