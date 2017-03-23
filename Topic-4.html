@@ -141,10 +141,26 @@ e^(B<sub>0</sub> + B<sub>1</sub><code>*</code>X) = p(X) <code>*</code> (e^(B<sub
 </div>
 <div id="section-3" class="section level2">
 <h2>4.7.8</h2>
-<p>The KNN (K = 1) approach</p>
+<p>The KNN (K = 1) approach, when used with in-sample testing–aka the training dataset–will result in 0% error, because the point is already present, so the “nearest neighbor” is predicted perfectly. However, because the error is 18% averaged over both the testing and training data sets, the error for the testing data is 36% (18 <code>*</code> 2). Therefore, the error for KNN is higher than that of the logistic regression model, and the logistic regression is the better fit for this particular data, suggesting that the decision boundaries are linear.</p>
 </div>
 <div id="section-4" class="section level2">
 <h2>4.7.9</h2>
+<div id="a" class="section level3">
+<h3>A</h3>
+<p>p(X)/1 - p(X) = 0.37<br />
+converted to<br />
+p(X) = 0.37 / 1 + 0.37</p>
+<pre class="r"><code>.37 / (1 + .37)</code></pre>
+<pre><code>## [1] 0.270073</code></pre>
+<p>Therefore, p(X) = 0.27, meaning that 27% of people with an odds of .37 of defaulting will in fact default on their credit card payments.</p>
+</div>
+<div id="b" class="section level3">
+<h3>B</h3>
+<p>.16 / 1 - .16 = odds</p>
+<pre class="r"><code>.16 / (1 - .16)</code></pre>
+<pre><code>## [1] 0.1904762</code></pre>
+<p>Therefore, the odds of a person defaulting with a 16% chance of defaulting on their credit card payment are .19.</p>
+</div>
 </div>
 </div>
 

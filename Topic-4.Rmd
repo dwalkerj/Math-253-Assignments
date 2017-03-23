@@ -18,9 +18,23 @@ e^(B~0~ + B~1~`*`X) = p(X) `*` (e^(B~0~ + B~1~`*`X) - 1)
 
 
 ## 4.7.8
-The KNN (K = 1) approach 
+The KNN (K = 1) approach, when used with in-sample testing--aka the training dataset--will result in 0% error, because the point is already present, so the "nearest neighbor" is predicted perfectly. However, because the error is 18% averaged over both the testing and training data sets, the error for the testing data is 36% (18 `*` 2). Therefore, the error for KNN is higher than that of the logistic regression model, and the logistic regression is the better fit for this particular data, suggesting that the decision boundaries are linear.
 
 ## 4.7.9
 
+### A
+p(X)/1 - p(X) = 0.37  
+converted to  
+p(X) = 0.37 / 1 + 0.37
+```{r}
+.37 / (1 + .37)
+```
+Therefore, p(X) = 0.27, meaning that 27% of people with an odds of .37 of defaulting will in fact default on their credit card payments.
 
+### B
+.16 / 1 - .16 = odds
+```{r}
+.16 / (1 - .16)
+```
 
+Therefore, the odds of a person defaulting with a 16% chance of defaulting on their credit card payment are .19.
