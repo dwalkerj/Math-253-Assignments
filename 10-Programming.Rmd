@@ -1,6 +1,62 @@
 # In-Class Programming Activity, Day 10
 
-Your work goes here ...
+Delia Walker-Jones
+
+```{r}
+library("ISLR")
+```
+
+
+## Logistic Function
+```{r}
+logistic <- function(x){
+  (exp(x))/(1 + (exp(x)))
+}
+
+logistic(2)
+```
+
+## Linear Combinations
+```{r}
+linear_combine <- function(data, coefs){
+  dnm = names(data)
+  result <- 0
+for (nm in names(coefs)) {
+  if (!(nm %in% names(data))) {
+     stop("doesn't contain variable")
+  }
+  else if (nm == "intercept") {
+    result <- result + coefs[[nm]]
+  } else {
+    result <- result + coefs[[nm]] * data[[nm]]
+  }
+}
+  result
+}
+
+names(Default)
+  
+
+#linear_combine(data = Default, 
+ #              coefs = c(intercept = 3, balance = 0.00001, income = -0.0002))
+```
+
+## Probabilities
+```{r}
+LL_logistic <- function(data, coefs, outcome){
+  linear_result <- linear_combine(data, coefs)
+  #print(linear_result)
+  prob <- logistic(linear_result)
+  #print(prob)
+}
+
+LL_logistic(data=Default, 
+            coefs = c(intercept = 1, income = -0.0001), 
+            outcome = Default$default == "Yes")
+```
+
+
+
 
 
 

@@ -1,6 +1,25 @@
 # In-Class Programming Activity, Day 13
 
-Your work goes here ...
+Delia Walker-Jones
+
+```{r}
+k_fold1 <- function(formula, method = lm, data = mtcars, predfun = predict, k = 10) {
+  ## length(data) might not work
+  sets <- (1:length(data) %% k) + 1
+  mspe <- numeric(k)
+  for (i in 1:k) {
+    For_Testing <- data[i == sets, ]
+    For_Training <- data[i != sets, ]
+  }
+  mod <- lm(mpg ~ hp + wt + am)
+  pred_vals <- predict(mod, newdata = For_Testing)
+  MSPE <- mean((For_Testing[["mpg"]] - pred_vals)ˆ2 )
+  mean(mspe)
+# producing an estimate of error
+return(error_estimate)
+}
+```
+
 
 
 

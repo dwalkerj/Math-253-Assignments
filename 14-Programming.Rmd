@@ -1,6 +1,20 @@
 # In-Class Programming Activity, Day 14
 
-Your work goes here ...
+Delia Walker-Jones
+
+```{r}
+library(glmnet)
+GenCont <- read.csv("http://tiny.cc/dcf/GenCont.csv")
+head(GenCont)
+```
+
+```{r}
+compare_ols_ridge <- function(responses, predictors, lambda=1){
+  # your statements will go here
+}
+```
+
+
 
 
 
