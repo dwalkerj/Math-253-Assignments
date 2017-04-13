@@ -1,6 +1,26 @@
 # In-Class Programming Activity, Day 15
 
-Your work goes here ...
+Delia Walker-Jones
+```{r}
+load("mona.rda")
+
+X <- t(mona) - mean(mona[])
+X_rand <- matrix(rnorm(250*191,mean=0,sd=1), 250, 191)
+X_corr <- X_rand %*% chol(var(X))
+
+index <- sample(1:191)
+zeros <- rep(0, 175)
+c <- c(2, 5, -3, -4)
+num <- sample(c, 16, replace = TRUE)
+sparse_vector <- c(zeros, num)
+
+beta <- sparse_vector[index]
+
+Y_pure <- X %*% beta
+Y_real <- c((X %*% beta), rnorm(191, mean = 0, sd = sqrt(var(Y_pure))))
+length(Y_real)
+length(Y_pure)
+```
 
 
 

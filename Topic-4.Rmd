@@ -2,7 +2,90 @@
 
 Delia Walker-Jones
 
+```{r}
+library("ISLR")
+library("MASS")
+```
+
+
 ## 4.7.11
+
+### A
+```{r}
+Auto01 <- data.frame(Auto)
+
+Auto01$mpg01 <- ifelse(Auto$mpg>median(Auto$mpg) & Auto$mpg>median(Auto$mpg), 1, 0)
+table(Auto01$mpg01)
+```
+### B
+```{r}
+names(Auto01)
+plot(x = Auto01$acceleration, y = Auto01$mpg01)
+plot(x = Auto01$weight, y = Auto01$mpg01)
+plot(x = Auto01$year, y = Auto01$mpg01)
+```
+I looked briefly at acceleration, weight, and year to see how those might affect mpg. Acceleration appears to have some sort of relationship, with cars with lower acceleration having mpg below the median value. However, the acceleration variable appears pretty clustered in the 15-20mph range, so it might not be quite as interesting. I next looked at weight, which was interesting--lighter cars seem to be more likely to have mpg over the median, which seems counter-intuitive. There doesn't seem to be any relationship between year and mpg, so I went with weight and acceleration as my explanatory variables.
+
+### C
+```{r}
+train = Auto01$year<82
+test = Auto01[!train,]
+mpg01Test <- Auto01$mpg01[!train]
+```
+In order to get more predictive data, I made the test dataset from all years except for 1982. Because year doesn't appear to affect mpg, this seems like a reasonable division. 
+
+### D
+```{r}
+ldaMod = lda(mpg01 ~ weight + acceleration, data = Auto01, subset = train)
+ldaMod
+```
+To test the model and see the test error, we run the model on our training data.
+```{r}
+ldaPred = predict(ldaMod, test)
+ldaPred
+table(ldaPred$class, mpg01Test)
+
+# Test error rate
+mean(ldaPred$class != mpg01Test)
+```
+We can conclude we have a test error rate of about 10%.
+
+### E
+```{r}
+qdaMod = qda(mpg01 ~ weight + acceleration, data = Auto01, subset = train)
+qdaMod
+
+qdaPred = predict(qdaMod, test)
+qdaPred
+
+table(qdaPred$class, mpg01Test)
+
+# Test error rate
+mean(qdaPred$class != mpg01Test)
+```
+We have a test error of about 13.3%.
+
+### F
+```{r}
+logMod = glm(mpg01 ~ weight + acceleration, data = Auto01, subset = train)
+summary(logMod)
+
+logProb = predict(logMod, test, type = "response")
+logPred = rep("Down", 30)
+logPred[logProb >.5] = "Up"
+
+table(logPred, mpg01Test)
+
+# Test error rate
+mean(logPred == mpg01Test)
+```
+
+
+
+
+
+
+
 ## 4.7.13
 ## 4.7.1
 Prove that  
