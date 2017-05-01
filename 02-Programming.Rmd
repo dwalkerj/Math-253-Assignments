@@ -2,15 +2,6 @@
 
 Delia Walker-Jones
 
-
-
-## Test statements
-
-```{r}
-scoreActivity::score253(2)
-```
-
-
 ## Task 1
 ```{r}
 #download.file("http://www-bcf.usc.edu/~gareth/ISL/Auto.csv", destfile="Auto.csv")
@@ -48,3 +39,9 @@ task5bottom
 
 ## Task 6 
 Completed
+
+## Test statements
+
+```{r}
+scoreActivity::score253(2)
+```

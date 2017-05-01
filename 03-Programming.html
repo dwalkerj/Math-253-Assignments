@@ -124,7 +124,8 @@ $(document).ready(function () {
 <p>Delia Walker-Jones</p>
 <div id="task-1" class="section level2">
 <h2>Task 1</h2>
-<pre class="r"><code>data(College, package = &quot;ISLR&quot;)</code></pre>
+<pre class="r"><code>library(ISLR)
+data(College, package = &quot;ISLR&quot;)</code></pre>
 </div>
 <div id="task-2" class="section level2">
 <h2>Task 2</h2>
@@ -163,7 +164,7 @@ MSE_test = 1/200 * sum((Y_test - fhat_test)^2)</code></pre>
 ## Running test statements for day  03</code></pre>
 <pre><code>## Loading required package: scoreActivity</code></pre>
 <pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## FAILED: &quot;package:ISLR&quot; %in% search()
+<pre><code>## passed: &quot;package:ISLR&quot; %in% search()
 ## passed: &quot;Yield&quot; %in% names(College)
 ## passed: object &quot;test_indices&quot; exists
 ## passed: object &quot;train_indices&quot; exists

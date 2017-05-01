@@ -17,8 +17,8 @@ test200 <- sum(log(testV))
 ## Task 3
 ```{r}
 vals <- rexp(10, rate = .01)
-LL_exp <- function(r){
- sum(log(dexp(vals, rate = r)))
+LL_exp <- function(rate){
+ sum(log(dexp(vals, rate)))
 }
 
 #LL_exp(1/50)

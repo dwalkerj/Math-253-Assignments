@@ -140,29 +140,34 @@ for (nm in names(coefs)) {
   if (nm == &quot;intercept&quot;) {
     result &lt;- result + coefs[[nm]]
   } else {
+    if (!(nm %in% names(data))) stop()
     result &lt;- result + coefs[[nm]] * data[[nm]]
   }
+  
 }
-  #if (!names(coefs) %in% data)
-   # stop()
-  result
-}
-
-#linear_combine(data = Default, 
- #              coefs = c(intercept = 3, balance = 0.00001, income = -0.0002))</code></pre>
+  return(result)
+  }</code></pre>
 </div>
 <div id="probabilities" class="section level2">
 <h2>Probabilities</h2>
 <pre class="r"><code>LL_logistic &lt;- function(data, coefs, outcome){
   linear_result &lt;- linear_combine(data, coefs)
-  #print(linear_result)
   prob &lt;- logistic(linear_result)
-  #print(prob)
+  if (outcome == TRUE){
+    data$likelihood = prob
+  }
+  else {
+    data$likelihood = 1 - prob
+  }
+  mean(data$likelihood)
 }
 
 LL_logistic(data=Default, 
             coefs = c(intercept = 1, income = -0.0001), 
             outcome = Default$default == &quot;Yes&quot;)</code></pre>
+<pre><code>## Warning in if (outcome == TRUE) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
+<pre><code>## [1] 0.8572314</code></pre>
 </div>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
@@ -170,14 +175,14 @@ LL_logistic(data=Default,
 <pre><code>## --------
 ## Running test statements for day  10</code></pre>
 <pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## Warning in if (abs(expr - match$x) &lt; match$pm) wins &lt;- TRUE: the condition
-## has length &gt; 1 and only the first element will be used</code></pre>
+<pre><code>## Warning in if (outcome == TRUE) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <pre><code>## passed: object &quot;Default&quot; exists
 ## passed: object &quot;logistic&quot; exists
 ## passed: logistic(0)
 ## passed: logistic(2)
 ## passed: linear_combine(data = Default, coef = c(intercept = 1, income = 2))[1]
-## FAILED: gives_error(linear_combine(data = Default, coef = c(intercept = 1, 
+## passed: gives_error(linear_combine(data = Default, coef = c(intercept = 1, 
 ##     whoopee = 2)))
 ## passed: is.function(LL_logistic)
 ## FAILED: LL_logistic(data = Default, coefs = c(intercept = 1, income = -1e-04), 

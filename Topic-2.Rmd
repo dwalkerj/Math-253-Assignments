@@ -179,12 +179,8 @@ confint(fit4)
 The confidence intervals for the x coefficient seem to be centered around .5 while the intervals for the intercept coefficient are centered around -1. The noisier the data, the wider the interval. With less noise, the coefficients are more predictable.
 
 
-
-
-
-
-
 ## On p. 66 the authors state, “This is clearly not true in Fig. 3.1” Explain why.
+
 
 ## On p. 77 the authors state, “In this case we cannot even fit the multiple regression models using least squares ….” Explain why.
 

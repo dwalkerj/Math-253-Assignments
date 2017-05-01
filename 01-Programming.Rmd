@@ -2,22 +2,18 @@
 
 Delia Walker-Jones
 
-```{r}
-scoreActivity::score253(1)
-```
-
-
 ## Test statements
 
 ## Task 1
 ```{r}
+library(mosaic)
 library(mosaicData)
 ```
 
 ## Task 2
 ```{r}
 string1 = "Today is"
-string2 = Sys.time()
+string2 = date()
 task2 = paste(string1, string2)
 task2
 ```
@@ -25,11 +21,9 @@ task2
 ## Task 3
 ```{r}
 task3a = names(Galton)
-task3a
 task3b = dim(Galton)
-task3b
 task3c = mean(Galton$height)
-task3c
+
 ```
 
 ## Task 4
@@ -48,5 +42,8 @@ task5pi = ((sum(montecarlo < 1)) / 1000) * 4
 task5pi
 ```
 
+```{r}
+scoreActivity::score253(1)
+```
 
 

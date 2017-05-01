@@ -27,7 +27,18 @@ X = cbind(x1, x2)
 
 t(X) %*% X
 
+w1 = cbind(rnorm(10000))
+w2 = cbind(rnorm(10000))
 
+W = cbind(w1, w2)
+
+W_cov = (t(W) %*% W)/nrow(W)
+
+A_inv = chol(Sigma_inv)
+
+Y = X %*% A
+
+Y = W %*% A
 ```
 
 

@@ -1,5 +1,102 @@
 # Abstract for the End-of-Term Project
 
 You'll give a description of your project here, including the names of all of your group members.
+```{r, cache = TRUE}
+library(dplyr)
+library(ggplot2)
+library(MASS)
+h1b = read.csv("h1b_kaggle.csv")
+names(h1b)
+
+h1bsubset <- na.omit(subset(h1b, CASE_STATUS=='CERTIFIED' | CASE_STATUS == 'CERTIFIED-WITHDRAWN'))
+
+h1bsubset[,9] = toupper(h1bsubset[,9])
+h1bsubset[,4] = toupper(h1bsubset[,4])
+#sort(table(h1bsubset$WORKSITE), decreasing = TRUE)
+#sort(table(h1bsubset$EMPLOYER_NAME), decreasing = TRUE)
+#sort(table(h1bsubset$SOC_NAME), decreasing = TRUE)
+dim(h1bsubset)
+table(h1bsubset$CASE_STATUS)
+```
+
+```{r}
+
+worksiteTab <- table(h1bsubset$WORKSITE)
+h1bsubsetA <- droplevels(h1bsubset[h1bsubset$WORKSITE %in% names(worksiteTab)[worksiteTab >= 1000],,drop=FALSE])
+#dim(h1bsubsetA)
+#min(table(h1bsubsetA$WORKSITE))
+#sort(table(h1bsubsetA$WORKSITE), decreasing = TRUE)
+#sort(table(h1bsubsetA$SOC_NAME), decreasing = TRUE)
+
+socTab = table(h1bsubsetA$SOC_NAME)
+h1bsubsetB <- droplevels(h1bsubsetA[h1bsubsetA$SOC_NAME %in% names(socTab)[socTab >= 10000],,drop=FALSE])
+dim(h1bsubsetB)
+min(table(h1bsubsetB$SOC_NAME))
+sort(table(h1bsubsetB$SOC_NAME), decreasing = TRUE)
+
+#ggplot(h1bsubsetB, aes(x = CASE_STATUS, y = PREVAILING_WAGE)) + geom_bar(stat = "identity")
+
+#x <- factor(x)
+#levels(x) <- list(Yes=c("Y", "Yes"), No=c("N", "No"))
+
+socnameList <- factor(h1bsubsetB$SOC_NAME)
+levels(socnameList) <- list(COMPUTER_DEVELOPMENT=c("SOFTWARE DEVELOPERS, APPLICATIONS", "COMPUTER PROGRAMMERS", "COMPUTER OCCUPATIONS, ALL OTHER"), COMPUTER_SYSTEMS=c("COMPUTER SYSTEMS ANALYSTS", "SOFTWARE DEVELOPERS, SYSTEMS SOFTWARE", "NETWORK AND COMPUTER SYSTEMS ADMINISTRATORS", "DATABASE ADMINISTRATORS", "COMPUTER SYSTEMS ANALYST"), ENGINEERS=c("ELECTRONICS ENGINEERS, EXCEPT COMPUTER", "MECHANICAL ENGINEERS"), MANAGERS=c("MANAGEMENT ANALYSTS", "COMPUTER AND INFORMATION SYSTEMS MANAGERS"), OTHER_FINANCE=c("ACCOUNTANTS AND AUDITORS", "FINANCIAL ANALYSTS", "MARKET RESEARCH ANALYSTS AND MARKETING SPECIALISTS", "OPERATIONS RESEARCH ANALYSTS"))
+
+#socnameList
+
+h1bsubsetB$SOC_GROUP = socnameList
+
+summary(h1bsubsetB$SOC_GROUP)
+
+dim(h1bsubsetB)
+
+write.csv(h1bsubsetB, file = "h1bsubset.csv")
+
+```
+COMPUTERDEVELOPMENT:SOFTWARE DEVELOPERS, APPLICATIONS, COMPUTER PROGRAMMERS, COMPUTER OCCUPATIONS, ALL OTHER
+
+COMPUTER SYSTEMS: COMPUTER SYSTEMS ANALYSTS, SOFTWARE DEVELOPERS, SYSTEMS SOFTWARE, NETWORK AND COMPUTER SYSTEMS ADMINISTRATORS, DATABASE ADMINISTRATORS, COMPUTER SYSTEMS ANALYST
+
+ENGINEERS: ELECTRONICS ENGINEERS, EXCEPT COMPUTER, MECHANICAL ENGINEERS
+
+MANAGERS: MANAGEMENT ANALYSTS, COMPUTER AND INFORMATION SYSTEMS MANAGERS
+
+OTHER (FINANCE, ETC): ACCOUNTANTS AND AUDITORS, FINANCIAL ANALYSTS, MARKET RESEARCH ANALYSTS AND MARKETING SPECIALISTS
+
+```{r}
+library(MASS)
+h1b = read.csv("h1bsubset.csv")
+
+h1bdata = subset(h1b, X != 803878 | X != 1010468)
+
+set.seed(1)
+train = sample(c(TRUE, FALSE), nrow(h1bdata), rep = TRUE)
+test = (!train)
+CASE_STATUStest = h1bdata[test,]$CASE_STATUS
+head(CASE_STATUStest)
+
+lda.Mod = lda(CASE_STATUS ~ SOC_GROUP + PREVAILING_WAGE +FULL_TIME_POSITION + YEAR, data = h1bdata, subset = train)
+lda.Mod
+
+xnames = dimnames(coef(lda.Mod))[[1]]
+plot(lda.Mod, xlab = xnames)
+```
+```{r}
+lda.Pred = predict(lda.Mod, h1bdata[test,])
+names(lda.Pred)
+lda.Class = lda.Pred$class
+table(lda.Class, h1bdata[test,]$CASE_STATUS)
+
+mean(lda.Class==h1bdata[test,]$CASE_STATUS)
+```
+
+
 
 Also, give a link to the public GitHub repository you and your team created to hold your work.
+
+
+```{r}
+library(rpart)
+tree1 = rpart(CASE_STATUS ~ SOC_GROUP + PREVAILING_WAGE +FULL_TIME_POSITION + YEAR, data = h1bdata, subset = train, cp = 0.001)
+
+```

@@ -4,6 +4,7 @@ Delia Walker-Jones
 
 ## Task 1
 ```{r}
+library(ISLR)
 data(College, package = "ISLR")
 ```
 

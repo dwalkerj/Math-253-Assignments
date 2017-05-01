@@ -119,175 +119,46 @@ $(document).ready(function () {
 </div>
 
 
-<div id="in-class-programming-activity-day-9" class="section level1">
-<h1>In-Class Programming Activity, Day 9</h1>
-<p>Delia Walker-Jones</p>
-<p>Create deck:</p>
-<pre class="r"><code>poker_deck &lt;- c(outer((10 * 2:14), 1:4, '+'))</code></pre>
-<p>Calculating suits and ranks</p>
-<pre class="r"><code>test_hand &lt;- sample(poker_deck, 5)
-
-suits &lt;- function(deck){
-  deck[1:length(deck)] %% 10
-}
-
-ranks &lt;- function(deck){
-  deck[1:length(deck)] %/% 10
-}</code></pre>
-<div id="function-1" class="section level3">
-<h3>Function 1</h3>
-<p>Royal flush: &lt;0.001% five cards of the same suit with ranks 10, ack, queen, king, ace. This could also be called a royal straight flush, but a royal flush is by necessity a straight flush.</p>
-<pre class="r"><code>is_royal_flush &lt;- function(){
-  
-}</code></pre>
+<div id="topic-6-exercises-selecting-model-terms" class="section level1">
+<h1>Topic 6 Exercises: Selecting Model Terms</h1>
+<div id="delia-walker-jones" class="section level2">
+<h2>Delia Walker-Jones</h2>
 </div>
-<div id="function-2" class="section level3">
-<h3>Function 2</h3>
-<p>Straight flush (not including royal flush): &lt;0.002% five cards of the same suit in consecutive order</p>
-<pre class="r"><code>is_straight_flush &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  consecutive &lt;- diff(sort(ranks(five_cards)))
-  if (max(suit_count) == 5 &amp;&amp; max(consecutive == 1)) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
-
-straight_flush_test &lt;- c(21, 31, 41, 51, 61)
-is_straight_flush(straight_flush_test)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is_straight_flush(test_hand)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+<div id="section" class="section level2">
+<h2>6.8.1</h2>
+<div id="a" class="section level3">
+<h3>A</h3>
+<p>The smallest RSS error for the training data is best subset selection–because it looks at every possible combination of predictors, and with each addition of a new p, RSS decreases monotonically. So with the goal of a small RSS and large R<sup>2</sup>, the more variables in the model the better, and best subset selection is most suited to reducing that training error. However, testing error is a different case.</p>
 </div>
-<div id="function-3" class="section level3">
-<h3>Function 3</h3>
-<p>Four of a kind 0.02% four cards of the same value (and, necessarily, different suits)</p>
-<pre class="r"><code>is_four_of_a_kind &lt;- function(five_cards){
-  rank_count &lt;- table(ranks(five_cards))
-  if (max(rank_count) == 4) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
-
-four_of_a_kind_test &lt;- c(44, 41, 42, 43, 104)
-is_four_of_a_kind(four_of_a_kind_test)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is_four_of_a_kind(test_hand)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+<div id="b" class="section level3">
+<h3>B</h3>
+<p>The smallest RSS error for the testing data is most likely to be best subset selection again–because best subset selection takes into account more combinations than forward-stepwise or backward-stepwise. However, it’s also possible that these methods might obtain a lower test RSS, by chance.</p>
 </div>
-<div id="function-4" class="section level3">
-<h3>Function 4</h3>
-<p>Full house: 0.14% Three of a kind and the other two cards forming a pair</p>
-<pre class="r"><code>is_full_house &lt;- function(five_cards){
-  counts &lt;- table(ranks(five_cards))
-  if (min(counts) == 2 &amp;&amp; max(counts) == 3) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
-test_hand</code></pre>
-<pre><code>## [1]  92 103  74 131  93</code></pre>
-<pre class="r"><code>is_full_house(test_hand)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+<div id="c" class="section level3">
+<h3>C</h3>
+<div id="i." class="section level4">
+<h4>i.</h4>
+<p>True – Every new k+1-variable model includes the previous predictors. #### ii. True – Every new k-variable model is a subset of the previous k+1-variable model. #### iii. False – forward-stepwise and backward-stepwise aren’t necessarily related. #### iv. False – forward-stepwise and backward-stepwise aren’t necessarily related. #### v. False – because best subset selection looks at every possibility, there is no guarantee that the predictors in the k-variable model will match the variables in the k+1-variable model.</p>
 </div>
-<div id="function-5" class="section level3">
-<h3>Function 5</h3>
-<p>Flush (excluding royal flush and straight flush): 0.20% five cards of the same suit</p>
-<pre class="r"><code>is_flush &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 5) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}</code></pre>
 </div>
-<div id="function-6" class="section level3">
-<h3>Function 6</h3>
-<p>Straight (excluding royal flush and straight flush): 0.39% five consecutively numbered cards</p>
-<pre class="r"><code>is_straight &lt;- function(five_cards){
-  consecutive &lt;- diff(sort(ranks(five_cards)))
-  if (max(consecutive) == 1) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
-
-is_straight(c(21, 31, 42, 52, 62))</code></pre>
-<pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="function-7" class="section level3">
-<h3>Function 7</h3>
-<pre class="r"><code>is_three_of_a_kind &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 3) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}</code></pre>
+<div id="section-1" class="section level2">
+<h2>6.8.2</h2>
+<div id="a-1" class="section level3">
+<h3>A</h3>
+<p>iii: Less flexible and hence will give improved prediction accuracy when its increase in bias is less than its decrease in variance.</p>
 </div>
-<div id="function-8" class="section level3">
-<h3>Function 8</h3>
-<pre class="r"><code>is_two_pair &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 2) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-  
-}</code></pre>
+<div id="b-1" class="section level3">
+<h3>B</h3>
+<p>iii: Less flexible and hence will give improved prediction accuracy when its increase in bias is less than its decrease in variance.</p>
 </div>
-<div id="function-9" class="section level3">
-<h3>Function 9</h3>
-<pre class="r"><code>is_pair &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 2) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}</code></pre>
+<div id="c-1" class="section level3">
+<h3>C</h3>
+<p>ii: More flexible and hence will give improved prediction accuracy when its increase in variance is less than its decrease in bias.</p>
 </div>
-<div id="test-statements" class="section level2">
-<h2>Test statements</h2>
-<pre class="r"><code>scoreActivity::score253(9)</code></pre>
-<pre><code>## --------
-## Running test statements for day  09</code></pre>
-<pre><code>## Loading required package: scoreActivity</code></pre>
-<pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## passed: is.function(ranks)
-## passed: is.function(suits)
-## passed: is_pair(c(21, 22, 33, 41, 52))
-## passed: is_pair(c(21, 31, 41, 51, 62))
-## passed: is_flush(c(21, 31, 41, 51, 71))
-## passed: is_full_house(c(21, 22, 31, 32, 33))
-## passed: is_full_house(c(21, 22, 31, 32, 42))
-## passed: is_straight(c(21, 31, 42, 52, 62))
-## passed: is_straight_flush(c(21, 31, 42, 52, 62))
-## passed: is_straight_flush(c(21, 31, 41, 51, 61))</code></pre>
+</div>
+<div id="section-2" class="section level2">
+<h2>6.8.9</h2>
 </div>
 </div>
 

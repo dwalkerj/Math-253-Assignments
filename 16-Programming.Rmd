@@ -2,6 +2,8 @@
 
 Delia Walker-Jones
 ```{r}
+
+
 #make_model_matrix <- function(x, basis_funs){
  # MM <- matrix(0, nrow = length(x)), ncol=length(basis_funs))
   #for ()

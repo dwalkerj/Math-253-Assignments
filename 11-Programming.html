@@ -149,9 +149,21 @@ x2 = cbind(rnorm(10))
 X = cbind(x1, x2)
 
 t(X) %*% X</code></pre>
-<pre><code>##           [,1]      [,2]
-## [1,] 10.373234 -1.458859
-## [2,] -1.458859  9.423594</code></pre>
+<pre><code>##             [,1]       [,2]
+## [1,] 10.28547229 0.06294054
+## [2,]  0.06294054 2.27504258</code></pre>
+<pre class="r"><code>w1 = cbind(rnorm(10000))
+w2 = cbind(rnorm(10000))
+
+W = cbind(w1, w2)
+
+W_cov = (t(W) %*% W)/nrow(W)
+
+A_inv = chol(Sigma_inv)
+
+Y = X %*% A
+
+Y = W %*% A</code></pre>
 </div>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
@@ -159,16 +171,16 @@ t(X) %*% X</code></pre>
 <pre><code>## --------
 ## Running test statements for day  11</code></pre>
 <pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## FAILED: object &quot;A_inv&quot; doesn't exist.
-## FAILED: object &quot;W&quot; doesn't exist.
+<pre><code>## passed: object &quot;A_inv&quot; exists
+## passed: object &quot;W&quot; exists
 ## passed: object &quot;A&quot; exists
 ## passed: all(abs(diag(2) - Sigma %*% Sigma_inv) &lt; 1e-05)
 ## passed: Sigma[1, 2]
 ## passed: all(abs((t(A) %*% A - Sigma)) &lt; 0.01)
 ## passed: nrow(X) == 10 &amp;&amp; ncol(X) == 2
-## ERROR when running  check(TRUE, all(abs(apply(W, FUN = mean, MARGIN = 2)) &lt; 0.04))
-## ERROR when running  check(TRUE, all(abs(W_cov - t(W) %*% W/nrow(W)) &lt; 0.01))
-## ERROR when running  check(TRUE, all(abs(Y - W %*% A) &lt; 0.01))</code></pre>
+## passed: all(abs(apply(W, FUN = mean, MARGIN = 2)) &lt; 0.04)
+## passed: all(abs(W_cov - t(W) %*% W/nrow(W)) &lt; 0.01)
+## passed: all(abs(Y - W %*% A) &lt; 0.01)</code></pre>
 </div>
 </div>
 

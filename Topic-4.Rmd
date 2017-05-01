@@ -5,6 +5,7 @@ Delia Walker-Jones
 ```{r}
 library("ISLR")
 library("MASS")
+library("class")
 ```
 
 
@@ -67,7 +68,7 @@ We have a test error of about 13.3%.
 
 ### F
 ```{r}
-logMod = glm(mpg01 ~ weight + acceleration, data = Auto01, subset = train)
+logMod = glm(mpg01 ~ weight + acceleration, data = Auto01, family = "binomial", subset = train)
 summary(logMod)
 
 logProb = predict(logMod, test, type = "response")
@@ -77,16 +78,25 @@ logPred[logProb >.5] = "Up"
 table(logPred, mpg01Test)
 
 # Test error rate
-mean(logPred == mpg01Test)
+mean(logPred != mpg01Test)
+```
+### G
+```{r}
+trainX = cbind(Auto01$weight, Auto01$acceleration)[train,]
+testX = cbind(Auto01$weight, Auto01$acceleration)[!train,]
+trainMpg01 = Auto01$mpg01[train]
+
+
+set.seed(1)
+knnMod = knn(trainX, testX, trainMpg01, k=10)
+summary(knnMod)
+```
+## 4.7.13
+```{r}
+Boston
 ```
 
 
-
-
-
-
-
-## 4.7.13
 ## 4.7.1
 Prove that  
 p(X) = e^(B~0~ + B~1~`*`X)/1 + e^(B~0~ + B~1~`*`X)  

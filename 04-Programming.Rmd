@@ -11,8 +11,8 @@ plot(1, xlim = c(0, 100), ylim = c(0,100), type="n", xlab = "X-Axis Label", ylab
 ```{r}
 x1 = c(20, 20, 40, 40)
 y1 = c(20, 40, 40, 20)
-x2 = c(20, 40)
-y2 = c(20, 20)
+x2 = c(20, 40, 20, 20, 20)
+y2 = c(20, 20, 20, 20, 20)
 plot(x1, y1, xlim = c(0, 100), ylim = c(0,100), type="p", pch = 2)
 lines(x1, y1)
 lines(x2, y2)
@@ -20,8 +20,8 @@ lines(x2, y2)
 
 ## Task 3
 ```{r}
-a = seq(0,(2*pi), by = .05)
-x3 = (sin(a)*40) + 50
+a = seq(0,(2*pi), by = .01)
+x3 = (sin(a)*20) + 50
 y3 = (cos(a)*40) + 60
 plot(x3, y3, xlim = c(0, 100), ylim = c(0,100), type="l")
 ```
@@ -30,8 +30,8 @@ plot(x3, y3, xlim = c(0, 100), ylim = c(0,100), type="l")
 ```{r}
 angles = seq(0,(2*pi), by = .05)
 radius = abs(sin(angles))*40
-x4 = (sin(a)*radius) + 50
-y4 = (cos(a)*radius) + 60
+x4 = (sin(angles)*radius) + 50
+y4 = (cos(angles)*radius) + 60
 
 plot(x4, y4, xlim = c(0, 100), ylim = c(0,100), type="l", lwd = 2)
 polygon(x4, y4, col = "skyblue")

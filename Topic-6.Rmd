@@ -1,2 +1,40 @@
 # Topic 6 Exercises: Selecting Model Terms
 
+## Delia Walker-Jones
+
+## 6.8.1
+### A
+The smallest RSS error for the training data is best subset selection--because it looks at every possible combination of predictors, and with each addition of a new p, RSS decreases monotonically. So with the goal of a small RSS and large R^2^, the more variables in the model the better, and best subset selection is most suited to reducing that training error. However, testing error is a different case.
+
+### B
+The smallest RSS error for the testing data is most likely to be best subset selection again--because best subset selection takes into account more combinations than forward-stepwise or backward-stepwise. However, it's also possible that these methods might obtain a lower test RSS, by chance.
+
+### C
+#### i. 
+True -- Every new k+1-variable model includes the previous predictors. 
+#### ii. 
+True -- Every new k-variable model is a subset of the previous k+1-variable model.
+#### iii. 
+False -- forward-stepwise and backward-stepwise aren't necessarily related.
+#### iv. 
+False -- forward-stepwise and backward-stepwise aren't necessarily related.
+#### v. 
+False -- because best subset selection looks at every possibility, there is no guarantee that the predictors in the k-variable model will match the variables in the k+1-variable model.
+
+
+## 6.8.2
+### A
+iii: Less flexible and hence will give improved prediction accuracy when its increase in bias is less than its decrease in variance.
+
+### B
+iii: Less flexible and hence will give improved prediction accuracy when its increase in bias is less than its decrease in variance.
+
+### C
+ii: More flexible and hence will give improved prediction accuracy when its increase in variance is less than its decrease in bias.
+
+## 6.8.9
+```{r}
+
+```
+
+

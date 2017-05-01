@@ -2,6 +2,7 @@
 
 Delia Walker-Jones
 ```{r}
+library(glmnet)
 load("mona.rda")
 
 X <- t(mona) - mean(mona[])
@@ -17,9 +18,34 @@ sparse_vector <- c(zeros, num)
 beta <- sparse_vector[index]
 
 Y_pure <- X %*% beta
-Y_real <- c((X %*% beta), rnorm(191, mean = 0, sd = sqrt(var(Y_pure))))
-length(Y_real)
-length(Y_pure)
+Y_real <- (X %*% beta) + rnorm(250, mean = 0, sd = sqrt(var(Y_pure)))
+
+modPure = lm(Y_pure ~ X)
+
+v1 <- rep("X", 191) 
+v2 <- as.character(c(1:191))
+v3 <-paste0(v1, v2)
+
+beta_hat_pure = coef(modPure)[v3]
+
+
+plot(beta_hat_pure, beta)
+```
+We can see that beta_hat_pure is a perfectly linear model; when graphed against beta, it creates a perfect line.
+
+```{r}
+modReal = lm(Y_real ~ X)
+beta_hat_real = coef(modReal)[v3]
+
+plot(beta_hat_real, beta)
+```
+The range of beta_hat_real is much bigger than beta_hat_pure; we can see that beta is sparse because the vast majority of y-axis values fall at 0.
+
+```{r}
+lasso_mod <- cv.glmnet(X, Y_real, alpha=1)
+beta_lasso <- predict(lasso_mod, type = "coefficients", s = lasso_mod$lambda.min)
+
+sing_vals <- svd(X)$d
 ```
 
 

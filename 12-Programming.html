@@ -119,175 +119,74 @@ $(document).ready(function () {
 </div>
 
 
-<div id="in-class-programming-activity-day-9" class="section level1">
-<h1>In-Class Programming Activity, Day 9</h1>
+<div id="in-class-programming-activity-day-12" class="section level1">
+<h1>In-Class Programming Activity, Day 12</h1>
 <p>Delia Walker-Jones</p>
-<p>Create deck:</p>
-<pre class="r"><code>poker_deck &lt;- c(outer((10 * 2:14), 1:4, '+'))</code></pre>
-<p>Calculating suits and ranks</p>
-<pre class="r"><code>test_hand &lt;- sample(poker_deck, 5)
+<pre class="r"><code>n_cases &lt;- 100
+red_mean &lt;- c(1,0)
+green_mean &lt;- c(0, -1)
+blue_mean &lt;- c(-1, 1)
 
-suits &lt;- function(deck){
-  deck[1:length(deck)] %% 10
-}
+covar_red &lt;- matrix(c(3, -1.7, -1.7, 1), nrow = 2)
+covar_blue &lt;- matrix(c(2, 1.5, 1.5, 3), nrow = 2)
 
-ranks &lt;- function(deck){
-  deck[1:length(deck)] %/% 10
-}</code></pre>
-<div id="function-1" class="section level3">
-<h3>Function 1</h3>
-<p>Royal flush: &lt;0.001% five cards of the same suit with ranks 10, ack, queen, king, ace. This could also be called a royal straight flush, but a royal flush is by necessity a straight flush.</p>
-<pre class="r"><code>is_royal_flush &lt;- function(){
-  
-}</code></pre>
-</div>
-<div id="function-2" class="section level3">
-<h3>Function 2</h3>
-<p>Straight flush (not including royal flush): &lt;0.002% five cards of the same suit in consecutive order</p>
-<pre class="r"><code>is_straight_flush &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  consecutive &lt;- diff(sort(ranks(five_cards)))
-  if (max(suit_count) == 5 &amp;&amp; max(consecutive == 1)) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
+set.seed(1)
+One &lt;- cbind(cbind(rnorm(n_cases)), cbind(rnorm(n_cases)))
+Two &lt;- cbind(cbind(rnorm(n_cases)), cbind(rnorm(n_cases)))
+Three &lt;- cbind(cbind(rnorm(n_cases)), cbind(rnorm(n_cases)))
 
-straight_flush_test &lt;- c(21, 31, 41, 51, 61)
-is_straight_flush(straight_flush_test)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is_straight_flush(test_hand)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-</div>
-<div id="function-3" class="section level3">
-<h3>Function 3</h3>
-<p>Four of a kind 0.02% four cards of the same value (and, necessarily, different suits)</p>
-<pre class="r"><code>is_four_of_a_kind &lt;- function(five_cards){
-  rank_count &lt;- table(ranks(five_cards))
-  if (max(rank_count) == 4) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
+Red &lt;- One %*% chol(covar_red)
+Green &lt;- Two %*% chol(covar_red)
+Blue &lt;- Three %*% chol(covar_blue)
 
-four_of_a_kind_test &lt;- c(44, 41, 42, 43, 104)
-is_four_of_a_kind(four_of_a_kind_test)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is_four_of_a_kind(test_hand)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-</div>
-<div id="function-4" class="section level3">
-<h3>Function 4</h3>
-<p>Full house: 0.14% Three of a kind and the other two cards forming a pair</p>
-<pre class="r"><code>is_full_house &lt;- function(five_cards){
-  counts &lt;- table(ranks(five_cards))
-  if (min(counts) == 2 &amp;&amp; max(counts) == 3) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
-test_hand</code></pre>
-<pre><code>## [1]  92 103  74 131  93</code></pre>
-<pre class="r"><code>is_full_house(test_hand)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-</div>
-<div id="function-5" class="section level3">
-<h3>Function 5</h3>
-<p>Flush (excluding royal flush and straight flush): 0.20% five cards of the same suit</p>
-<pre class="r"><code>is_flush &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 5) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}</code></pre>
-</div>
-<div id="function-6" class="section level3">
-<h3>Function 6</h3>
-<p>Straight (excluding royal flush and straight flush): 0.39% five consecutively numbered cards</p>
-<pre class="r"><code>is_straight &lt;- function(five_cards){
-  consecutive &lt;- diff(sort(ranks(five_cards)))
-  if (max(consecutive) == 1) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}
 
-is_straight(c(21, 31, 42, 52, 62))</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-</div>
-<div id="function-7" class="section level3">
-<h3>Function 7</h3>
-<pre class="r"><code>is_three_of_a_kind &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 3) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}</code></pre>
-</div>
-<div id="function-8" class="section level3">
-<h3>Function 8</h3>
-<pre class="r"><code>is_two_pair &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 2) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-  
-}</code></pre>
-</div>
-<div id="function-9" class="section level3">
-<h3>Function 9</h3>
-<pre class="r"><code>is_pair &lt;- function(five_cards){
-  suit_count &lt;- table(suits(five_cards))
-  if (max(suit_count) == 2) {
-    check &lt;- TRUE
-  }
-  else {
-    check &lt;- FALSE
-  }
-  check
-}</code></pre>
-</div>
+#b[,3:5] &lt;- t(t(b[,3:5])-x)
+Red &lt;- t(t(Red) + red_mean)
+Green &lt;- t(t(Green) + green_mean)
+Blue &lt;- t(t(Blue) + blue_mean)
+
+RedData &lt;- data.frame(&quot;x&quot; = Red[1,], &quot;y&quot; = Red[,2], &quot;class&quot; = &quot;red&quot;, stringsAsFactors = FALSE)
+GreenData &lt;- data.frame(&quot;x&quot; = Green[1,], &quot;y&quot; = Green[,2], &quot;class&quot; = &quot;green&quot;, stringsAsFactors = FALSE)
+BlueData &lt;- data.frame(&quot;x&quot; = Blue[1,], &quot;y&quot; = Blue[,2], &quot;class&quot; = &quot;blue&quot;, stringsAsFactors = FALSE)
+
+Same_sigma &lt;- rbind(RedData, GreenData)
+Different_sigma &lt;- rbind(RedData, BlueData)
+
+library(MASS)
+# Using Same_sigma
+mod_LDA_one &lt;- lda(class ~ x + y, data = Same_sigma)
+
+test_LDA_one &lt;- predict(mod_LDA_one, newdata = Same_sigma)
+
+mod_QDA_one &lt;- qda(class ~ x + y, data = Same_sigma)
+
+test_QDA_one &lt;- predict(mod_QDA_one, newdata = Same_sigma)
+
+# Using Different_sigma
+mod_LDA_two &lt;- lda(class ~ x + y, data = Different_sigma)
+
+test_LDA_two &lt;- predict(mod_LDA_one, newdata = Different_sigma)
+
+mod_QDA_two &lt;- qda(class ~ x + y, data = Different_sigma)
+
+test_QDA_two &lt;- predict(mod_QDA_one, newdata = Different_sigma)</code></pre>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
-<pre class="r"><code>scoreActivity::score253(9)</code></pre>
+<pre class="r"><code>scoreActivity::score253(12)</code></pre>
 <pre><code>## --------
-## Running test statements for day  09</code></pre>
-<pre><code>## Loading required package: scoreActivity</code></pre>
+## Running test statements for day  12</code></pre>
 <pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## passed: is.function(ranks)
-## passed: is.function(suits)
-## passed: is_pair(c(21, 22, 33, 41, 52))
-## passed: is_pair(c(21, 31, 41, 51, 62))
-## passed: is_flush(c(21, 31, 41, 51, 71))
-## passed: is_full_house(c(21, 22, 31, 32, 33))
-## passed: is_full_house(c(21, 22, 31, 32, 42))
-## passed: is_straight(c(21, 31, 42, 52, 62))
-## passed: is_straight_flush(c(21, 31, 42, 52, 62))
-## passed: is_straight_flush(c(21, 31, 41, 51, 61))</code></pre>
+<pre><code>## passed: object &quot;Red&quot; exists
+## passed: object &quot;Green&quot; exists
+## passed: object &quot;Blue&quot; exists
+## passed: all(names(Red) %in% c(&quot;x&quot;, &quot;y&quot;, &quot;class&quot;))
+## passed: all(abs(apply(Red[, c(1, 2)], FUN = mean, MARGIN = 2) - red_mean) &lt; 
+##     0.5)
+## passed: all(table(Same_sigma$class) == c(n_cases, n_cases))
+## passed: object &quot;mod_LDA_one&quot; exists
+## passed: object &quot;mod_QDA_two&quot; exists
+## passed: object &quot;test_QDA_one&quot; exists
+## passed: object &quot;test_LDA_two&quot; exists</code></pre>
 </div>
 </div>
 
