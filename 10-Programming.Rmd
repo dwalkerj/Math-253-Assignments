@@ -38,18 +38,23 @@ for (nm in names(coefs)) {
 LL_logistic <- function(data, coefs, outcome){
   linear_result <- linear_combine(data, coefs)
   prob <- logistic(linear_result)
-  if (outcome == TRUE){
-    data$likelihood = prob
-  }
-  else {
-    data$likelihood = 1 - prob
-  }
-  mean(data$likelihood)
+  likelihood <- ifelse(outcome, prob, 1-prob)
+
+  sum(log(likelihood))
 }
 
 LL_logistic(data=Default, 
             coefs = c(intercept = 1, income = -0.0001), 
             outcome = Default$default == "Yes")
+```
+
+## Optimize
+```{r}
+best_coefs <- optim(par = c(intercept = 1, income = -0.0001), fn = LL_logistic, data = Default, outcome = Default$default == "Yes")
+
+best_coefs
+
+glm(default == "Yes" ~ income, data=Default, family="binomial")
 ```
 
 

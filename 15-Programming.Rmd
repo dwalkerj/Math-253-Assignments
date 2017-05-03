@@ -42,10 +42,28 @@ plot(beta_hat_real, beta)
 The range of beta_hat_real is much bigger than beta_hat_pure; we can see that beta is sparse because the vast majority of y-axis values fall at 0.
 
 ```{r}
-lasso_mod <- cv.glmnet(X, Y_real, alpha=1)
+lasso_mod <- cv.glmnet(X, Y_pure, alpha=1)
 beta_lasso <- predict(lasso_mod, type = "coefficients", s = lasso_mod$lambda.min)
 
 sing_vals <- svd(X)$d
+r_square <- (cumsum(sing_vals^2))/sum(sing_vals^2)
+
+sing_vals_rand <- svd(X_rand)$d
+r_square_rand <- (cumsum(sing_vals_rand^2))/sum(sing_vals_rand^2)
+
+sing_vals_corr <- svd(X_corr)$d
+r_square_corr <- (cumsum(sing_vals_corr^2))/sum(sing_vals_corr^2)
+
+plot(seq(1:191), r_square, col = "red")
+points(seq(1:191), r_square_rand, col = "green")
+points(seq(1:191), r_square_corr, col = "blue")
+
+n99 <- 0
+n99_rand <- 150
+n99_corr <- 0
+
+library(pls)
+pcr.fit <- pcr(Y_real ~ X, scale = TRUE, validation="CV")
 ```
 
 

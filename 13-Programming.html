@@ -122,37 +122,85 @@ $(document).ready(function () {
 <div id="in-class-programming-activity-day-13" class="section level1">
 <h1>In-Class Programming Activity, Day 13</h1>
 <p>Delia Walker-Jones</p>
+<pre class="r"><code>library(ISLR)
+library(mosaic)</code></pre>
+<pre><code>## Loading required package: dplyr</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## Loading required package: mosaicData</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## The 'mosaic' package masks several functions from core packages in order to add additional features.  
+## The original behavior of these functions should not be affected by this.</code></pre>
+<pre><code>## 
+## Attaching package: 'mosaic'</code></pre>
+<pre><code>## The following object is masked from 'package:Matrix':
+## 
+##     mean</code></pre>
+<pre><code>## The following objects are masked from 'package:dplyr':
+## 
+##     count, do, tally</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     binom.test, cor, cov, D, fivenum, IQR, median, prop.test,
+##     quantile, sd, t.test, var</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     max, mean, min, prod, range, sample, sum</code></pre>
 <pre class="r"><code>k_fold1 &lt;- function(formula, method = lm, data = mtcars, predfun = predict, k = 10) {
-  ## length(data) might not work
   sets &lt;- (1:length(data) %% k) + 1
   mspe &lt;- numeric(k)
   for (i in 1:k) {
     For_Testing &lt;- data[i == sets, ]
     For_Training &lt;- data[i != sets, ]
+    mod &lt;- lm(mpg ~ hp + wt + am, data = For_Training)
+    pred_vals &lt;- predict(mod, newdata = For_Testing)
+    mspe[k] &lt;- mean((For_Testing[[&quot;mpg&quot;]] - pred_vals)^2)
+  }
+  mean(mspe)
 }
-mean(mspe)
-mod &lt;- lm(mpg ~ hp + wt + am)
-pred_vals &lt;- predict(mod, newdata = For_Testing)
-# producing an estimate of error
-return(error_estimate)
-}</code></pre>
+
+k_fold1()</code></pre>
+<pre><code>## [1] 1.589542</code></pre>
+<pre class="r"><code>k_fold &lt;- function(formula, method, data = mtcars, predfun, k = 10) {
+  sets &lt;- (1:length(data) %% k) + 1
+  mspe &lt;- numeric(k)
+  for (i in 1:k) {
+    For_Testing &lt;- data[i == sets, ]
+    For_Training &lt;- data[i != sets, ]
+    mod &lt;- method(formula, data = For_Training)
+    pred_vals &lt;- predfun(mod, newdata = For_Testing)
+    mspe[k] &lt;- mean((For_Testing[[as.character(formula[[2]])]] - pred_vals)^2)
+  }
+  mean(mspe)
+}
+
+k_fold(formula = mpg ~ hp + wt + am, method = lm, data=mtcars, predfun = predict)</code></pre>
+<pre><code>## [1] 1.589542</code></pre>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
 <pre class="r"><code>scoreActivity::score253(13)</code></pre>
 <pre><code>## --------
 ## Running test statements for day  13</code></pre>
 <pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## Warning in results[k] &lt;- paste(&quot;ERROR when running &quot;, deparse(ldots[k][[1]]
-## $expr)): number of items to replace is not a multiple of replacement length</code></pre>
 <pre><code>## passed: object &quot;k_fold1&quot; exists
-## FAILED: object &quot;k_fold&quot; doesn't exist.
+## passed: object &quot;k_fold&quot; exists
 ## passed: &quot;method&quot; %in% names(formals(k_fold1))
 ## passed: &quot;data&quot; %in% names(formals(k_fold1))
-## ERROR when running  check(about(8, pm = 3), k_fold1(), pts = 2)
+## FAILED: k_fold1()
 ## passed: &quot;For_Testing&quot; %in% all.names(body(k_fold1))
-## ERROR when running  check(TRUE, &quot;predfun&quot; %in% all.names(body(k_fold)))
-## ERROR when running  check(TRUE, &quot;method&quot; %in% all.names(body(k_fold)))
-## ERROR when running  check(about(24, pm = 4), k_fold(wage ~ age + sex, data = mosaicData::CPS85,</code></pre>
+## passed: &quot;predfun&quot; %in% all.names(body(k_fold))
+## passed: &quot;method&quot; %in% all.names(body(k_fold))
+## FAILED: k_fold(wage ~ age + sex, data = mosaicData::CPS85, k = 10, predfun = predict, 
+##     method = lm)</code></pre>
 </div>
 </div>
 

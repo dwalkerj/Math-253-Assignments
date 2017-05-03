@@ -143,7 +143,20 @@ head(GenCont)</code></pre>
 ## 5     0
 ## 6     0</code></pre>
 <pre class="r"><code>compare_ols_ridge &lt;- function(responses, predictors, lambda=1){
-  # your statements will go here
+  data = data.frame(responses, predictors)
+  set.seed(1)
+  train = sample(c(TRUE, FALSE), nrow(data), rep = TRUE)
+  test = (!train)
+  response.test = response[test]
+  lm.mod = lm(responses ~ predictors, data = train)
+  ridge.mod = glmnet(predictors[train,], responses[train,], alpha = 0)
+  
+  #lm.pred = predict(lm.mod)
+  #ols_in = 
+  ridge.pred = predict(ridge.mod, lambda, newx = predictors[train,])
+  ridge_in = mean((ridge.pred - response.test)^2)
+  resultsVector = c(lambda, ridge_in)
+  return(resultsVector)
 }</code></pre>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>

@@ -153,21 +153,49 @@ for (nm in names(coefs)) {
 <pre class="r"><code>LL_logistic &lt;- function(data, coefs, outcome){
   linear_result &lt;- linear_combine(data, coefs)
   prob &lt;- logistic(linear_result)
-  if (outcome == TRUE){
-    data$likelihood = prob
-  }
-  else {
-    data$likelihood = 1 - prob
-  }
-  mean(data$likelihood)
+  likelihood &lt;- ifelse(outcome, prob, 1-prob)
+
+  sum(log(likelihood))
 }
 
 LL_logistic(data=Default, 
             coefs = c(intercept = 1, income = -0.0001), 
             outcome = Default$default == &quot;Yes&quot;)</code></pre>
-<pre><code>## Warning in if (outcome == TRUE) {: the condition has length &gt; 1 and only
-## the first element will be used</code></pre>
-<pre><code>## [1] 0.8572314</code></pre>
+<pre><code>## [1] -2425.733</code></pre>
+</div>
+<div id="optimize" class="section level2">
+<h2>Optimize</h2>
+<pre class="r"><code>best_coefs &lt;- optim(par = c(intercept = 1, income = -0.0001), fn = LL_logistic, data = Default, outcome = Default$default == &quot;Yes&quot;)
+
+best_coefs</code></pre>
+<pre><code>## $par
+##     intercept        income 
+## -8.037797e+02  6.068686e-03 
+## 
+## $value
+## [1] -202809.9
+## 
+## $counts
+## function gradient 
+##      327       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+<pre class="r"><code>glm(default == &quot;Yes&quot; ~ income, data=Default, family=&quot;binomial&quot;)</code></pre>
+<pre><code>## 
+## Call:  glm(formula = default == &quot;Yes&quot; ~ income, family = &quot;binomial&quot;, 
+##     data = Default)
+## 
+## Coefficients:
+## (Intercept)       income  
+##  -3.094e+00   -8.353e-06  
+## 
+## Degrees of Freedom: 9999 Total (i.e. Null);  9998 Residual
+## Null Deviance:       2921 
+## Residual Deviance: 2917  AIC: 2921</code></pre>
 </div>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
@@ -175,8 +203,6 @@ LL_logistic(data=Default,
 <pre><code>## --------
 ## Running test statements for day  10</code></pre>
 <pre><code>## Loading required package: lazyeval</code></pre>
-<pre><code>## Warning in if (outcome == TRUE) {: the condition has length &gt; 1 and only
-## the first element will be used</code></pre>
 <pre><code>## passed: object &quot;Default&quot; exists
 ## passed: object &quot;logistic&quot; exists
 ## passed: logistic(0)
@@ -185,10 +211,10 @@ LL_logistic(data=Default,
 ## passed: gives_error(linear_combine(data = Default, coef = c(intercept = 1, 
 ##     whoopee = 2)))
 ## passed: is.function(LL_logistic)
-## FAILED: LL_logistic(data = Default, coefs = c(intercept = 1, income = -1e-04), 
+## passed: LL_logistic(data = Default, coefs = c(intercept = 1, income = -1e-04), 
 ##     outcome = Default$default == &quot;Yes&quot;)
-## FAILED: object &quot;best_coefs&quot; doesn't exist.
-## ERROR when running  check(TRUE, &quot;par&quot; %in% names(best_coefs))</code></pre>
+## passed: object &quot;best_coefs&quot; exists
+## passed: &quot;par&quot; %in% names(best_coefs)</code></pre>
 </div>
 </div>
 
