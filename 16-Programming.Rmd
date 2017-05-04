@@ -2,16 +2,40 @@
 
 Delia Walker-Jones
 ```{r}
+my_knots <- function(x, k){
+  quantile(x)
+}
+
+```
 
 
-#make_model_matrix <- function(x, basis_funs){
- # MM <- matrix(0, nrow = length(x)), ncol=length(basis_funs))
-  #for ()
-#}
 
-#make_polynomial_basis <- function(p){
- # lapply(0:p, FUN = mononomial)
-#}
+```{r}
+fit_spline <- function(formula, k=2, data=parent.frame()) {
+  y <- eval(formula[[2]], envir=data)
+  x <- eval(formula[[3]], envir=data)
+  knot_locations <- my_knots(x, k)
+  MM <- spline_model_matrix(x, knot_locations)
+  mod <- lm(y ~ MM - 1)
+  res <- list(coef = coef(mod), knots = knot_locations, cov = vcov(mod))
+  class(res) <- "my_spline"
+  
+  return(res)
+}
+```
+
+
+```{r}
+predict.my_spline <- 
+  function(mod, newx, level = 0.95,
+           intervals=c("none", "confidence", "prediction")) {
+  intervals <- match.arg(intervals)
+  MM <- spline_model_matrix(newx, mod$knots)
+  vals <- MM %*% mod$coef
+  se <- sqrt(rowSums(MM %*% mod$cov * MM))
+  if (intervals == "none") return(vals)
+  else return(NULL) # for future use
+}
 ```
 
 

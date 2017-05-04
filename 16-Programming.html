@@ -122,14 +122,30 @@ $(document).ready(function () {
 <div id="in-class-programming-activity-day-16" class="section level1">
 <h1>In-Class Programming Activity, Day 16</h1>
 <p>Delia Walker-Jones</p>
-<pre class="r"><code>#make_model_matrix &lt;- function(x, basis_funs){
- # MM &lt;- matrix(0, nrow = length(x)), ncol=length(basis_funs))
-  #for ()
-#}
-
-#make_polynomial_basis &lt;- function(p){
- # lapply(0:p, FUN = mononomial)
-#}</code></pre>
+<pre class="r"><code>my_knots &lt;- function(x, k){
+  quantile(x)
+}</code></pre>
+<pre class="r"><code>fit_spline &lt;- function(formula, k=2, data=parent.frame()) {
+  y &lt;- eval(formula[[2]], envir=data)
+  x &lt;- eval(formula[[3]], envir=data)
+  knot_locations &lt;- my_knots(x, k)
+  MM &lt;- spline_model_matrix(x, knot_locations)
+  mod &lt;- lm(y ~ MM - 1)
+  res &lt;- list(coef = coef(mod), knots = knot_locations, cov = vcov(mod))
+  class(res) &lt;- &quot;my_spline&quot;
+  
+  return(res)
+}</code></pre>
+<pre class="r"><code>predict.my_spline &lt;- 
+  function(mod, newx, level = 0.95,
+           intervals=c(&quot;none&quot;, &quot;confidence&quot;, &quot;prediction&quot;)) {
+  intervals &lt;- match.arg(intervals)
+  MM &lt;- spline_model_matrix(newx, mod$knots)
+  vals &lt;- MM %*% mod$coef
+  se &lt;- sqrt(rowSums(MM %*% mod$cov * MM))
+  if (intervals == &quot;none&quot;) return(vals)
+  else return(NULL) # for future use
+}</code></pre>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
 <pre class="r"><code>scoreActivity::score253(16)</code></pre>

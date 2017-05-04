@@ -17,7 +17,7 @@ rtree_pure <- tree(y ~ x, data=Cartoon_data, control = pure)
 plot(rtree_pure)
 text(rtree_pure)
 ```
-For x = 3, we predict y to be between 1 or 3.
+For x = 3, we predict y to be be 1.
 
 ```{r}
 # Classification problem
@@ -26,7 +26,43 @@ plot(ctree_pure)
 text(ctree_pure)
 
 ```
-We predict x=7 to be B.
+We predict x=7 to be A.
+
+```{r}
+predict(rtree_pure)
+predict(ctree_pure)
+predict(rtree_pure, newdata = data.frame(x = 3))
+predict(ctree_pure, newdata = data.frame(x = 7))
+
+print(rtree_pure)
+print(ctree_pure)
+```
+```{r}
+rtree_5 <- prune.tree(rtree_pure, best = 5)
+ctree_2 <- prune.misclass(ctree_pure, best = 2)
+
+print(rtree_5)
+
+nterminal = 2:8
+tree_deviance = deviance(rtree_5, detail = TRUE)
+```
+
+```{r}
+library(mosaic)
+pure_for_cps <- tree.control(nrow(CPS85), mincut = 0, minsize = 1, mindev = 0)
+
+Sector_classifier <- tree(sector ~ wage + sex + educ + exper,
+data = mosaicData::CPS85,
+control = pure_for_cps)
+
+cps_prune <- prune.misclass(Sector_classifier, best = 20)
+
+plot(cps_prune)
+text(cps_prune)
+summary(cps_prune)
+```
+I have 26 terminal nodes; if "best" is smaller, I get 17 terminal nodes. The residual mean deviance is 2.779. The misclassification error rate is almost 50%, which seems pretty high.
+
 
 
 
