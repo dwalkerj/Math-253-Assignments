@@ -2,10 +2,26 @@
 
 Delia Walker-Jones
 ```{r}
+library(ISLR)
 my_knots <- function(x, k){
-  quantile(x)
+  quantile(x, prob = seq(1/(k+1), k/(k+1), 1/(k+1)))
+}
+```
+
+```{r}
+spline_model_matrix <- function(x, knot_locations) {
+  MM <- cbind(1, x, x^2, x^3)
+  new_vector <- x
+  for (i in knot_locations){
+    new_vector = (new_vector - i)^3
+    MM <- cbind(MM, new_vector)
+  }
+  return(MM)
 }
 
+loc <- my_knots(Wage$wage, 4)
+MM <- spline_model_matrix(Wage$wage, loc)
+spline_coefs <- coef(lm(wage ~ MM, data = Wage))
 ```
 
 
@@ -17,9 +33,9 @@ fit_spline <- function(formula, k=2, data=parent.frame()) {
   knot_locations <- my_knots(x, k)
   MM <- spline_model_matrix(x, knot_locations)
   mod <- lm(y ~ MM - 1)
-  res <- list(coef = coef(mod), knots = knot_locations, cov = vcov(mod))
+  rse <- sqrt(deviance(mod)/df.residual(mod))
+  res <- list(coef = coef(mod), knots = knot_locations, cov = vcov(mod), rse = rse)
   class(res) <- "my_spline"
-  
   return(res)
 }
 ```
@@ -33,8 +49,11 @@ predict.my_spline <-
   MM <- spline_model_matrix(newx, mod$knots)
   vals <- MM %*% mod$coef
   se <- sqrt(rowSums(MM %*% mod$cov * MM))
+  rse <- mod$rse
   if (intervals == "none") return(vals)
-  else return(NULL) # for future use
+  else if (intervals == "confidence") return(data.frame(vals, upper = vals + (2*se), lower = vals - (2*se)))
+  else if (intervals == "prediction") return(data.frame(vals, upper = vals + (2*sqrt(se^2 + rse^2)), lower = vals - (2*sqrt(se^2 + rse^2))))
+  else return(NULL)
 }
 ```
 

@@ -122,18 +122,32 @@ $(document).ready(function () {
 <div id="in-class-programming-activity-day-16" class="section level1">
 <h1>In-Class Programming Activity, Day 16</h1>
 <p>Delia Walker-Jones</p>
-<pre class="r"><code>my_knots &lt;- function(x, k){
-  quantile(x)
+<pre class="r"><code>library(ISLR)
+my_knots &lt;- function(x, k){
+  quantile(x, prob = seq(1/(k+1), k/(k+1), 1/(k+1)))
 }</code></pre>
+<pre class="r"><code>spline_model_matrix &lt;- function(x, knot_locations) {
+  MM &lt;- cbind(1, x, x^2, x^3)
+  new_vector &lt;- x
+  for (i in knot_locations){
+    new_vector = (new_vector - i)^3
+    MM &lt;- cbind(MM, new_vector)
+  }
+  return(MM)
+}
+
+loc &lt;- my_knots(Wage$wage, 4)
+MM &lt;- spline_model_matrix(Wage$wage, loc)
+spline_coefs &lt;- coef(lm(wage ~ MM, data = Wage))</code></pre>
 <pre class="r"><code>fit_spline &lt;- function(formula, k=2, data=parent.frame()) {
   y &lt;- eval(formula[[2]], envir=data)
   x &lt;- eval(formula[[3]], envir=data)
   knot_locations &lt;- my_knots(x, k)
   MM &lt;- spline_model_matrix(x, knot_locations)
   mod &lt;- lm(y ~ MM - 1)
-  res &lt;- list(coef = coef(mod), knots = knot_locations, cov = vcov(mod))
+  rse &lt;- sqrt(deviance(mod)/df.residual(mod))
+  res &lt;- list(coef = coef(mod), knots = knot_locations, cov = vcov(mod), rse = rse)
   class(res) &lt;- &quot;my_spline&quot;
-  
   return(res)
 }</code></pre>
 <pre class="r"><code>predict.my_spline &lt;- 
@@ -143,8 +157,11 @@ $(document).ready(function () {
   MM &lt;- spline_model_matrix(newx, mod$knots)
   vals &lt;- MM %*% mod$coef
   se &lt;- sqrt(rowSums(MM %*% mod$cov * MM))
+  rse &lt;- mod$rse
   if (intervals == &quot;none&quot;) return(vals)
-  else return(NULL) # for future use
+  else if (intervals == &quot;confidence&quot;) return(data.frame(vals, upper = vals + (2*se), lower = vals - (2*se)))
+  else if (intervals == &quot;prediction&quot;) return(data.frame(vals, upper = vals + (2*sqrt(se^2 + rse^2)), lower = vals - (2*sqrt(se^2 + rse^2))))
+  else return(NULL)
 }</code></pre>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>

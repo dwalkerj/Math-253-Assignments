@@ -10,34 +10,35 @@ head(GenCont)
 
 ```{r}
 compare_ols_ridge <- function(responses, predictors, lambda=1){
-  fulldata = data.frame(responses, predictors)
+  fulldata = data.frame(resp = responses, predictors)
   x = fulldata[,-1]
-  y = fulldata[1]
+  y = fulldata[[1]]
   xnames = seq(1, ncol(predictors))
   
   # Create training and testing data
   set.seed(1)
   train = sample(c(TRUE, FALSE), nrow(fulldata), rep = TRUE)
-  test = (!train)
-  response.test = y[test,]
+  test = !train
+  response.test = y[test]
   
   # Creating lm and ridge models
-  lm.mod = lm(responses ~ predictors, data = train)
-  ridge.mod = glmnet(x[train,], y[train,], alpha = 0)
+  lm.mod = lm(resp ~ ., data = fulldata[train,])
+  ridge.mod = glmnet(as.matrix(x[train,]), y[train], alpha = 0)
   
   # LM predictions and error
-  lm.pred = predict(lm.mod, newdata = train)
-  ols_in = mean((lm.pred$residuals)^2)
+  lm.pred = predict(lm.mod, newdata = fulldata[train,])
+  ols_in = mean((lm.pred - y[train])^2)
+  ols_out = mean(((predict(lm.mod, newdata = fulldata[train,]) - y[test])^2))
   
   # Ridge predictions and error
-  ridge.pred = predict(ridge.mod, lambda, newx = x[test,])
-  ridge_in = mean((ridge.pred - response.test)^2)
-  ridge_out = mean(((predict(ridge.mod, lambda, type = "coefficients") - response.test))^2)
-  resultsVector = c(lambda, ridge_in, ols_in, ridge_out)
+  ridge.pred = predict(ridge.mod, lambda, newx = as.matrix(x[test,]))
+  ridge_out = mean((ridge.pred - response.test)^2)
+  ridge_in = mean(((predict(ridge.mod, lambda, newx = as.matrix(x[train,])) - y[train]))^2)
+  resultsVector = c(lambda = lambda, ols_in = ols_in, ols_out = ols_out, ridge_in = ridge_in, ridge_out = ridge_out)
   return(resultsVector)
 }
 
-responses = GenCont[1]
+responses = GenCont[, 1]
 predictors = GenCont[,-1]
 Shrink_results = compare_ols_ridge(responses, predictors)
 ```
