@@ -34,7 +34,7 @@ Straight flush (not including royal flush): <0.002% five cards of the same suit 
 is_straight_flush <- function(five_cards){
   suit_count <- table(suits(five_cards))
   consecutive <- diff(sort(ranks(five_cards)))
-  if (max(suit_count) == 5 && max(consecutive == 1)) {
+  if (max(suit_count) == 5 && max(consecutive) == 1) {
     check <- TRUE
   }
   else {

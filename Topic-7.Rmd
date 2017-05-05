@@ -1,2 +1,17 @@
 # Topic 7 Exercises: Nonlinear regression
 
+Delia Walker-Jones
+
+## 7.9.3
+!["7.9.3"](/home/local/MAC/dwalkerj/Math-253-finished/Math-253-Assignments/7.9.3_graph.jpg)
+The curve is linear between -2 and 1 and quadratic after 1.
+
+## 7.9.4
+!["7.9.3"](/home/local/MAC/dwalkerj/Math-253-finished/Math-253-Assignments/7.9.4_graph.jpg)
+It's constant between -2 and -1, and 0 and 1, but linear elsewhere.
+
+## 7.9.5
+
+
+## 7.9.11
+
