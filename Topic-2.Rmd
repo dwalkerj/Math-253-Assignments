@@ -180,9 +180,11 @@ The confidence intervals for the x coefficient seem to be centered around .5 whi
 
 
 ## On p. 66 the authors state, “This is clearly not true in Fig. 3.1” Explain why.
+The residuals in Fig 3.1 are not distributed normally; they're shorter closer to 0 and longer as Sales and TV increase. Therefore there isn't really a "common variance" so to speak but a variance that's related to TV--the error is "correlated" to TV.
 
 
 ## On p. 77 the authors state, “In this case we cannot even fit the multiple regression models using least squares ….” Explain why.
+When there are more coefficients than observations it is difficult to estimate a multiple linear regression model, because each coefficient will (theoretically) have an exact solution with no residual. 
 
 ## 3.7.3
 ### A
