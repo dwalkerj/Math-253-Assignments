@@ -9,14 +9,14 @@ library(mosaic)
 
 ```{r}
 k_fold1 <- function(formula, method = lm, data = mtcars, predfun = predict, k = 10) {
-  sets <- (1:length(data) %% k) + 1
+  sets <- (1:length(mtcars) %% k) + 1
   mspe <- numeric(k)
   for (i in 1:k) {
-    For_Testing <- data[i == sets, ]
-    For_Training <- data[i != sets, ]
+    For_Testing <- mtcars[i == sets, ]
+    For_Training <- mtcars[i != sets, ]
     mod <- lm(mpg ~ hp + wt + am, data = For_Training)
     pred_vals <- predict(mod, newdata = For_Testing)
-    mspe[k] <- mean((For_Testing[["mpg"]] - pred_vals)^2)
+    mspe[i] <- mean((For_Testing[["mpg"]] - pred_vals)^2)
   }
   mean(mspe)
 }
@@ -33,7 +33,7 @@ k_fold <- function(formula, method, data = mtcars, predfun, k = 10) {
     For_Training <- data[i != sets, ]
     mod <- method(formula, data = For_Training)
     pred_vals <- predfun(mod, newdata = For_Testing)
-    mspe[k] <- mean((For_Testing[[as.character(formula[[2]])]] - pred_vals)^2)
+    mspe[i] <- mean((For_Testing[[as.character(formula[[2]])]] - pred_vals)^2)
   }
   mean(mspe)
 }

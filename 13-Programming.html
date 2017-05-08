@@ -156,20 +156,20 @@ library(mosaic)</code></pre>
 ## 
 ##     max, mean, min, prod, range, sample, sum</code></pre>
 <pre class="r"><code>k_fold1 &lt;- function(formula, method = lm, data = mtcars, predfun = predict, k = 10) {
-  sets &lt;- (1:length(data) %% k) + 1
+  sets &lt;- (1:length(mtcars) %% k) + 1
   mspe &lt;- numeric(k)
   for (i in 1:k) {
-    For_Testing &lt;- data[i == sets, ]
-    For_Training &lt;- data[i != sets, ]
+    For_Testing &lt;- mtcars[i == sets, ]
+    For_Training &lt;- mtcars[i != sets, ]
     mod &lt;- lm(mpg ~ hp + wt + am, data = For_Training)
     pred_vals &lt;- predict(mod, newdata = For_Testing)
-    mspe[k] &lt;- mean((For_Testing[[&quot;mpg&quot;]] - pred_vals)^2)
+    mspe[i] &lt;- mean((For_Testing[[&quot;mpg&quot;]] - pred_vals)^2)
   }
   mean(mspe)
 }
 
 k_fold1()</code></pre>
-<pre><code>## [1] 1.589542</code></pre>
+<pre><code>## [1] 7.112813</code></pre>
 <pre class="r"><code>k_fold &lt;- function(formula, method, data = mtcars, predfun, k = 10) {
   sets &lt;- (1:length(data) %% k) + 1
   mspe &lt;- numeric(k)
@@ -178,13 +178,13 @@ k_fold1()</code></pre>
     For_Training &lt;- data[i != sets, ]
     mod &lt;- method(formula, data = For_Training)
     pred_vals &lt;- predfun(mod, newdata = For_Testing)
-    mspe[k] &lt;- mean((For_Testing[[as.character(formula[[2]])]] - pred_vals)^2)
+    mspe[i] &lt;- mean((For_Testing[[as.character(formula[[2]])]] - pred_vals)^2)
   }
   mean(mspe)
 }
 
 k_fold(formula = mpg ~ hp + wt + am, method = lm, data=mtcars, predfun = predict)</code></pre>
-<pre><code>## [1] 1.589542</code></pre>
+<pre><code>## [1] 7.112813</code></pre>
 <div id="test-statements" class="section level2">
 <h2>Test statements</h2>
 <pre class="r"><code>scoreActivity::score253(13)</code></pre>
@@ -195,11 +195,11 @@ k_fold(formula = mpg ~ hp + wt + am, method = lm, data=mtcars, predfun = predict
 ## passed: object &quot;k_fold&quot; exists
 ## passed: &quot;method&quot; %in% names(formals(k_fold1))
 ## passed: &quot;data&quot; %in% names(formals(k_fold1))
-## FAILED: k_fold1()
+## passed: k_fold1()
 ## passed: &quot;For_Testing&quot; %in% all.names(body(k_fold1))
 ## passed: &quot;predfun&quot; %in% all.names(body(k_fold))
 ## passed: &quot;method&quot; %in% all.names(body(k_fold))
-## FAILED: k_fold(wage ~ age + sex, data = mosaicData::CPS85, k = 10, predfun = predict, 
+## passed: k_fold(wage ~ age + sex, data = mosaicData::CPS85, k = 10, predfun = predict, 
 ##     method = lm)</code></pre>
 </div>
 </div>

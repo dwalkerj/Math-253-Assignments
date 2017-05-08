@@ -5,6 +5,7 @@ Delia Walker-Jones
 ## 8.4.1
 
 ## 8.4.2
+Boosting is similar to bagging, but doesn't create multiple copies of the original training dataset. Boosting is sequential and each tree is grown using info from the previous tree; each tree is fit on a modified version of the original dataset. It "learns slowly".
 
 ## 8.4.3
 

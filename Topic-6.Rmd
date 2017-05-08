@@ -33,8 +33,102 @@ iii: Less flexible and hence will give improved prediction accuracy when its inc
 ii: More flexible and hence will give improved prediction accuracy when its increase in variance is less than its decrease in bias.
 
 ## 6.8.9
+### A
 ```{r}
+library(ISLR)
+College = College
 
+set.seed(1)
+train = sample(1:nrow(College), nrow(College)/2)
+test = (-train)
 ```
+Create vectors for training and testing data.
+
+### B
+```{r}
+lmMod = lm(Apps ~., data = College[train,])
+lmPred = predict(lmMod, newdata = College[test,])
+mean((College[test,]$Apps - lmPred)^2)
+```
+The test error is 1525283.
+
+### C
+```{r}
+library(glmnet)
+
+trainMatrix = model.matrix(Apps ~., College[train,])
+ridgeMod = glmnet(trainMatrix, College[train,]$Apps, alpha = 0)
+min(ridgeMod$lambda)
+```
+Our minimum lambda is 417.1605.
+```{r}
+testMatrix = model.matrix(Apps ~., College[test,])
+ridgePred = predict(ridgeMod, s = min(ridgeMod$lambda), newx = testMatrix)
+mean((College[test,]$Apps - ridgePred)^2)
+```
+The test error is 1413120, somewhat lower than the LM model.
+
+### D
+```{r}
+lassoMod = glmnet(trainMatrix, College[train,]$Apps, alpha = 1)
+min(lassoMod$lambda)
+plot(lassoMod)
+```
+The minimum lambda is 2.23.
+```{r}
+lassoPred = predict(lassoMod, s = min(lassoMod$lambda), newx = testMatrix)
+mean((College[test,]$Apps - lassoPred)^2)
+
+# Get sparse matrix of coefficients:
+lassoCoef = predict(lassoMod, type = "coefficients", s = min(lassoMod$lambda))
+lassoCoef
+```
+The test error rate is 1519440.
+
+### E
+```{r}
+library(pls)
+
+pcrMod = pcr(Apps ~., data = College[train,], scale = TRUE, validation = "CV")
+validationplot(pcrMod, val.type = "MSEP")
+```
+It looks like M = 16 where the lowest cross-validation error occurs.
+
+```{r}
+pcrPred = predict(pcrMod, College[test,], ncomp = 16)
+mean((College[test,]$Apps - pcrPred)^2)
+```
+Our test error rate is 1631627, which is higher than our previous models.
+
+### F
+```{r}
+plsMod = plsr(Apps ~., data = College[train,], scale = TRUE, validation = "CV")
+validationplot(plsMod, val.type = "MSEP")
+summary(plsMod)
+```
+The lowest cross-validation error appears to be at M = 5 components.
+
+```{r}
+plsPred = predict(plsMod, College[test,], ncomp = 5)
+mean((College[test,]$Apps - plsPred)^2)
+```
+The error rate is 1717798, the highest of any model.
+
+### G
+The PCR and PLS models performed worse comparatively to the ridge and lasso models. The LM model also had a higher test error rate than the ridge and lasso models. However, looking at the lasso model plot, there appears to be a strong outlier in the data that's affecting the models. If we found that outlier our results might change. 
+
+Calculating the R^2^ for each model is below:
+
+```{r}
+test.avg <- mean(College[test,]$Apps)
+lmRsquare <- 1 - mean((lmPred - College[test,]$Apps)^2) / mean((test.avg - College[test,]$Apps)^2)
+ridgeRsquare <- 1 - mean((ridgePred - College[test,]$Apps)^2) / mean((test.avg - College[test,]$Apps)^2)
+lassoRsquare <- 1 - mean((lassoPred - College[test,]$Apps)^2) / mean((test.avg - College[test,]$Apps)^2)
+pcrRsquare <- 1 - mean((pcrPred - College[test,]$Apps)^2) / mean((test.avg - College[test,]$Apps)^2)
+plsRsquare <- 1 - mean((plsPred - College[test,]$Apps)^2) / mean((test.avg - College[test,]$Apps)^2)
+
+c(lmRsquare = lmRsquare, ridgeRsquare = ridgeRsquare, lassoRsquare = lassoRsquare, pcrRsquare = pcrRsquare, plsRsquare = plsRsquare)
+```
+The R^2^ values for the lm, ridge, and lasso models are the largest, while they're smaller for the PCR and PLS models, which makes sense given our respective test error rates. 
 
 

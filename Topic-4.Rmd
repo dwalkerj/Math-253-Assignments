@@ -94,8 +94,78 @@ summary(knnMod)
 
 ## 4.7.13
 ```{r}
-Boston
+Boston <- Boston
+head(Boston)
+summary(Boston$crim)
+Boston$crim01 = ifelse(Boston$crim>median(Boston$crim) & Boston$crim>median(Boston$crim), 1, 0)
+table(Boston$crim01)
 ```
+We add a new variable, crim01, that consists of 1s and 0s representing crime rate above or below the median.
+
+```{r}
+set.seed(1)
+train = sample(1:nrow(Boston), nrow(Boston)/2)
+test = (-train)
+crim01.test = Boston$crim01[test]
+length(test)
+```
+We divide the data into test and training data.
+
+```{r}
+glmMod = glm(crim01 ~.-crim01 - crim, data = Boston[train,], family = "binomial")
+summary(glmMod)
+
+glmProb = predict(glmMod, Boston[test,], type = "response")
+glmPred = rep(0, length(glmProb))
+glmPred[glmProb > 0.5] <- 1
+table(glmPred, crim01.test)
+
+mean(glmPred != crim01.test)
+```
+Our error rate for logistic regression is about 12.25%.
+
+```{r}
+ldaMod = lda(crim01 ~.-crim01 - crim, data = Boston[train,])
+ldaMod
+ldaPred = predict(ldaMod, Boston[test,])
+ldaClass = ldaPred$class
+table(ldaClass, crim01.test)
+mean(ldaClass != crim01.test)
+```
+For this LDA model, our error rate is about 16.6%.
+```{r}
+qdaMod = qda(crim01 ~.-crim01 - crim, data = Boston[train,])
+qdaMod
+qdaPred = predict(qdaMod, Boston[test,])
+table(qdaPred$class, crim01.test)
+mean(qdaPred$class != crim01.test)
+```
+For this QDA model, we have an error rate of about 11%.
+
+```{r}
+set.seed(1)
+trainX = cbind(Boston$zn, Boston$indus, Boston$chas, Boston$nox, Boston$rm, Boston$age, Boston$dis, Boston$rad, Boston$tax, Boston$ptratio, Boston$black, Boston$lstat, Boston$medv)[train,]
+testX = cbind(Boston$zn, Boston$indus, Boston$chas, Boston$nox, Boston$rm, Boston$age, Boston$dis, Boston$rad, Boston$tax, Boston$ptratio, Boston$black, Boston$lstat, Boston$medv)[test,]
+knnPred = knn(trainX, testX, Boston$crim01[train], k = 1)
+table(knnPred, crim01.test)
+
+mean(knnPred != crim01.test)
+```
+The error rate for k = 1 is about 9%.
+
+```{r}
+knnPred1 = knn(trainX, testX, Boston$crim01[train], k = 10)
+table(knnPred1, crim01.test)
+mean(knnPred1 != crim01.test)
+```
+The error rate for k = 10 is about 15%.
+```{r}
+knnPred2 = knn(trainX, testX, Boston$crim01[train], k = 100)
+table(knnPred2, crim01.test)
+mean(knnPred2 != crim01.test)
+```
+
+The error rate for k = 100 is about 27.3%.
 
 
 ## 4.7.1
