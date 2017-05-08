@@ -3,15 +3,116 @@
 Delia Walker-Jones
 
 ## 8.4.1
+```{r}
+library(tree)
+Cartoon_data <- data.frame(
+x = 1:8,
+y = c(2,5,1,3,8,5,4,6),
+z = c(1, 6, 7, 3, 2, 8, 4, 5)
+)
+
+pure <- tree.control(8, mincut = 0, minsize = 1, mindev = 0)
+rtree_pure <- tree(y ~ x + z, data=Cartoon_data, control = pure)
+plot(rtree_pure)
+text(rtree_pure)
+
+plot(Cartoon_data$x, Cartoon_data$z)
+partition.tree(rtree_pure, ordvars = c("x", "z"), add = TRUE)
+```
+
 
 ## 8.4.2
 Boosting is similar to bagging, but doesn't create multiple copies of the original training dataset. Boosting is sequential and each tree is grown using info from the previous tree; each tree is fit on a modified version of the original dataset. It "learns slowly".
 
 ## 8.4.3
+```{r}
+p <- seq(0, 1, .01)
+classification_error <- (1 - pmax(p, 1 - p))
+gini <- p * (1 - p)
+cross_entropy <- - (p * log(p) + (1 - p) * log(1 - p))
+matplot(p, cbind(classification_error, gini, cross_entropy), col = c("red", "blue", "forestgreen"))
+```
 
 ## 8.4.4
+!["8.4.4"](/home/local/MAC/dwalkerj/Math-253-finished/Math-253-Assignments/Topic8graph.jpg)
+
 
 ## 8.4.5
+```{r}
+pred = c(.1, .15, .2, .2, .55, .6, .6, .65, .7, .75)
+
+# Majority vote
+mean(pred > .5)
+# .6 means probability that class is red
+
+mean(pred)
+# .45 means probability that class is green
+```
+
 
 ## 8.4.12
+```{r}
+library(MASS)
+library(randomForest)
+library(gbm)
+
+diabetes = Pima.te
+dim(diabetes)
+
+# First we have to transform the "type" variable into a yes/no binary variable (1 for no, 0 for yes) so that it can be used in boosting
+diabetes$type1 <- 0
+diabetes$type1[diabetes$type == "Yes"] <- 1
+head(diabetes$type1)
+diabetes$type1 = as.factor(diabetes$type1)
+
+class(diabetes$type1)
+
+dim(diabetes)
+
+set.seed(1)
+train <- sample(nrow(diabetes), size = nrow(diabetes) / 2)
+test = (-train)
+```
+### Boosting
+```{r}
+boostMod = gbm(type1 ~.-type, data = diabetes[train,], distribution = "bernoulli", n.trees = 100, interaction.depth = 1)
+#summary(boostMod)
+
+
+boostPred = predict(boostMod, newdata = diabetes[test,], n.trees = 100)
+head(boostPred)
+mean((boostPred - diabetes[test,]$type1)^2)
+```
+Boost doesn't find anything meaningful; this is weird, because when the distribution is "gaussian", and it's a regression problem (for the 0/1 response variable), there are clear influences. I'm curious why this is.
+
+### Bagging
+```{r}
+bagMod <- randomForest(type1 ~ . -type, data = diabetes[train,],
+                          mtry = ncol(diabetes) - 2, importance = TRUE)
+
+plot(bagMod)
+bagPred <- predict(bagMod, newdata = diabetes[test,])
+mean((diabetes[test,]$type1 - bagPred)^2)
+```
+Again the tree is not meaningful, but the error plot is interesting. I'm confused as to why this is.
+
+### Random Forests
+```{r}
+rfMod <- randomForest(type1 ~ .-type, data=diabetes[train,],
+                          mtry = ncol(diabetes) - 2, importance = TRUE)
+plot(rfMod)
+rfPred <- predict(rfMod, newdata = diabetes[test,])
+mean((diabetes[test,]$type1 - rfPred)^2)
+```
+### Logistic regression
+```{r}
+logMod = glm(type1 ~.-type,family = "binomial", data=diabetes[train,])
+summary(logMod)
+
+logPred = predict(logMod, newdata = diabetes[test,])
+mean((diabetes[test,]$type1 - logPred)^2)
+```
+Nothing is "meaningful"! Apparently a different dataset would have been better.
+
+
 
