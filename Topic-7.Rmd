@@ -21,4 +21,78 @@ As lambda approaches infinity, the smoother spline g1 will have smaller test RSS
 If lambda is 0, g1 and g2 will cancel out and have the same RSS for training and testing; the functions will be the same thing because there's no smoothing.
 
 ## 7.9.11
+### A
+```{r}
+set.seed(1)
+x1 = rnorm(100)
+x2 = rnorm(100)
+
+# Create y according to this equation:
+y = (3*x1) + (2 * x2) + 1.5
+```
+
+### B
+```{r}
+beta1 = 3
+```
+
+### C
+```{r}
+a = y - beta1 * x1
+beta2 = lm(a~x2)$coef[2]
+```
+
+### D
+```{r}
+a = y - beta2 * x2
+beta1 = lm(a~x1)$coef[2]
+```
+
+### E
+```{r}
+beta_values <- matrix(NA, nrow = 1000,ncol = 3)
+
+for (i in 1:1000) {
+   a <- y - beta1*x1
+   beta2 <- lm(a~x2)$coef[2]
+   a <- y - beta2*x2
+   fit <- lm(a~x1)
+   
+   if(i < 1000){
+     beta1 = fit$coef[2]
+   }
+   beta0 <- fit$coef[1]
+    
+   beta_values[i,1] <- beta0
+   beta_values[i,2] <- beta1
+   beta_values[i,3] <- beta2
+   }
+
+
+head(beta_values)
+
+plot(1:1000, beta_values[,1], type = "l", ylim = c(0, 
+    3), col = "red")
+lines(1:1000, beta_values[,2], col = "forestgreen")
+lines(1:1000, beta_values[,3], col = "blue")
+```
+
+### F
+```{r}
+lmMod = lm(y ~ x1 + x2)
+summary(lmMod)
+
+plot(1:1000, beta_values[,1], type = "l", ylim = c(0, 
+    3), col = "red")
+lines(1:1000, beta_values[,2], col = "forestgreen")
+lines(1:1000, beta_values[,3], col = "blue")
+abline(h = lmMod$coefficients[1], lty = "dashed")
+abline(h = lmMod$coefficients[2], lty = "dashed")
+abline(h = lmMod$coefficients[3], lty = "dashed")
+```
+
+### G
+When the true relationship is linear, as it is in this simulated dataset, only one backfitting iteration is needed to obtain the same approximation as the multiple regression coefficient estimates.
+
+
 
